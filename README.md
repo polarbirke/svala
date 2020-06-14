@@ -3,11 +3,11 @@
 Svala is a tool to quickly generate CSS utility classes and design tokens.
 
 - **No JavaScript**. Svala is written in Sass (specifically, SCSS), not JavaScript. While you still need a pipeline to compile Sass to CSS, configuration and usage are done entirely in Sass.
-- **Highly customisable**. Svala is designed to adapt to your way of working, not the other way around. You can generate verbose classes like `.margin-left` or use shorthand like `.ml`, define prefixes (or "namespaces") like `.yolo-flex` and use size scales to get `.u-grey-100, .u-grey-200, .u-grey-300, …`.
+- **Highly customisable**. Svala is designed to adapt to your way of working, not the other way around. You can generate verbose classes like `.margin-left` or use shorthand like `.ml`, define prefixes (or "namespaces") like `.yolo-flex` or use hierarchical scales to get output like `.u-grey-100, .u-grey-200, .u-grey-300, …`.
 - **Responsive**. It should go without saying, but yes: Svala handles your breakpoints and generates classes for responsive use, e.g. `.hidden@desktop` or `.lg:hidden` – it's up to you how you configure it. 
 - **Small footprint**. There is no default output – Svala only generates what you configure. Grow your utility classes with the requirements of your project and keep your CSS lean and clean.
 
-If you have not heard of utility classes or design tokens before, there are plenty of fantastic articles about them online – use your search engine of choice! You can also read ["CSS and Scalability"](http://mrmrs.io/writing/2016/03/24/scalable-css/) by Adam Morse, the creator of [Tachyons](https://tachyons.io/). This is the article that literally rewired our brain four years ago.    
+If you have not heard of utility classes or design tokens before, there are plenty of fantastic articles about them online – use your search engine of choice! You can also read ["CSS and Scalability"](http://mrmrs.io/writing/2016/03/24/scalable-css/) by Adam Morse, the creator of [Tachyons](https://tachyons.io/). This is the article that literally rewired our brain when it was published.    
 
 ## Installation
 
@@ -27,14 +27,14 @@ Svala is written in Sass, so you need Sass to run it. It doesn't matter if you l
 
 ### Overview
 
-If you're thinking about utility classes, you're probably familiar with CSS ruleset terminology. Svala uses both well-defined terms like _property_ and _value_ as well as a few others:
+If you're thinking about utility classes, you're probably familiar with CSS ruleset terminology. Svala uses both well-defined terms like _selector_, _property_ and _value_, as well as a few others:
 
 - **base selector** (or _token_): The base name for your selector. Typically, you will use the CSS property you want to control for this, e.g. `margin` or `border`.
 - **axis**: Svala introduces a concept called _axes_ (plural, long 'e' 😉). An axis can be used to enhance a base selector with directional input, e.g. `margin-left` or `border-right`.
 - **item**: Svala also allows you to define an additional set of items to iterate over, e.g. a size scale for visual hierarchy or a set of different values like `auto`, `hidden`, `scroll`.
 - **state**: If you need to factor pseudo-classes into your utilities, Svala has you covered. Use _states_ to generate class variants for `:hover`, `:focus` and others.
 - **breakpoint**: All your classes can be scoped to your project's breakpoints and cater to your responsive needs.
-- **prefix** and **postfix**: You can add extra bits to the beginning and/or end of your selectors by using _prefixes_ and _postfixes_. Use this to "namespace" your utility classes with `.u-`, for example.
+- **prefix** and **postfix**: You can add extra bits to the beginning and/or end of your selectors by using _prefixes_ and _postfixes_. Use this to namespace your utility classes with `.u-`, for example.
 
 Let's look at actual selectors:
 
@@ -44,7 +44,7 @@ Let's look at actual selectors:
 
 "margin" is the _base selector_, which is enhanced with "left" as an _axis_ and "300" as an _item_ from a size scale. It should only apply to "tablet" or greater (assuming a mobile-first approach with _breakpoints_). 
 
-Here is a second example with a few classes:
+Here is a second example:
 
 ```
 .u-overflow-x-hidden { … }
@@ -68,7 +68,7 @@ breakpoint-modifier-divider| string | '\\@' | The character joining your selecto
 stateful-mode | 'leading' or 'trailing' | 'trailing' | Define where states (e.g. 'hover' or 'visited') are added to selectors: prepended before the selector (but after both prefix and breakpoint, if applicable) or appended after axis and items.   
 responsive-mode | 'leading' or 'trailing' | 'trailing' |  Define where breakpoint names (e.g. 'tablet' or 'medium') are added to selectors: prepended before the selector (but after the prefix, if applicable) or appended after axis, items and state.
 
-Use a map to set your preferences and merge those with Svala's defaults:
+Create a variable called `$svala-options` and use a map to set your preferences and merge those with Svala's defaults:
 
 ```
 $breakpoints-map: (
@@ -93,16 +93,80 @@ Here we're adding a set of breakpoints and tell Svala to output classes with lea
 
 ### Config maps for the utility class generator 
 
-Svala uses Sass [maps](https://sass-lang.com/documentation/values/maps) and [lists](https://sass-lang.com/documentation/values/lists) for configuration.
+Start with importing the generator from the package:
 
+```
+// This is an exmaple, your path to Svala may need to  
+// be different, depending on your folder structure 
+@import "node_modules/svala/generator";
+```
 
+Svala uses nested Sass [maps](https://sass-lang.com/documentation/values/maps) and [lists](https://sass-lang.com/documentation/values/lists) for configuration. You can pass a config map to the Svala generator directly or create a variable and pass that. Here we're using the latter:
 
+```
+$config: (
+    'border': (
+        'property': 'border',
+        'value': '1px solid black'
+    )
+);
+```
 
+This assigns a map to `$config`. The _key_ of the map entry, 'border', is your base selector and its value – a nested map – holds the rest of the settings for this particular class. 
 
- 
+Now all that is left to do is to call the generator with your config:
 
+```
+@generator($config);
+```
 
+If you didn't change Svala's default options, this will create the following CSS output:
 
+```
+.u-border {
+    border: 1px solid black;
+}
+```
+
+Let's look at a second, more realistic example and pass the config directly this time: 
+
+```
+@generator((
+    'border': (
+        'property': 'border',
+        'axes': ('top', 'right', 'bottom', 'left'),
+        'value': '1px solid black'
+    )
+));
+```
+
+With Svala's default options, this will result in 
+
+```
+.u-border {
+    border: 1px solid black;
+}
+
+.u-border-top {
+    border-top: 1px solid black;
+}
+
+.u-border-right {
+    border-right: 1px solid black;
+}
+
+.u-border-bottom {
+    border-bottom: 1px solid black;
+}
+
+.u-border-left {
+    border-left: 1px solid black;
+}
+```
+
+#### States
+
+Please refer to https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes for a list of commonly recognized pseudo-classes.
 
 ```
 
