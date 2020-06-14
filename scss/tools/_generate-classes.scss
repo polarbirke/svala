@@ -3,13 +3,13 @@
 
 @mixin generate-classes(
     $property,
-    $selector: map-get($svala-options, 'selector'),
-    $value: map-get($svala-options, 'value'),
-    $items: map-get($svala-options, 'items'),
+    $selector: null,
+    $value: null,
+    $items: null,
     $item-modifier-divider: map-get($svala-options, 'item-modifier-divider'),
-    $axes: map-get($svala-options, 'axes'),
+    $axes: null,
     $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider'),
-    $states: map-get($svala-options, 'states'),
+    $states: null,
     $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
     $prefix: map-get($svala-options, 'prefix'),
     $postfix: map-get($svala-options, 'postfix'),
