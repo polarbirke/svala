@@ -50,14 +50,14 @@ Here is a second example:
 .u-overflow-x-hidden { … }
 ```
 
-This selector uses a _prefix_ ".u-", the _base selector_ "overflow" and was enhanced with "x" as _axis_ and "hidden" from a set of _items_.
+This selector uses a _prefix_ ".u-", the _base selector_ "overflow" and was enhanced with the _axis_ "x" as well as "hidden" from a set of _items_.
 
 ### Output settings
 
 The first thing you'll want to do  with Svala is to adjust the output to your liking. There are a few options at your disposal:
 
 Option | Value | Default | Description
------- | ---- | ------- | -----------
+------ | ----- | ------- | -----------
 breakpoints | map | null | Your project's breakpoints. Configure them as a map with ('name': 'media query') pairs like ('tablet': 'min-width: 768px'). The name will be added to your class selector.
 prefix | string | 'u-' | An optional prefix for all your utility classes. Use it to avoid collisions ("namespace") with third-party CSS or distinguish utility classes from "regular" ones. You can also reset it by setting it to an empty string: `''`.
 postfix | string | '' | An optional postfix for all your utility classes. Use it for the same reasons as you would a prefix, or leave it empty.   
@@ -80,7 +80,6 @@ $my-options: (
     'breakpoints': $breakpoints-map,
     'breakpoint-modifier-divider': '\\:',
     'state-modifier-divider': '\\:',
-    'axis-modifier-divider': '',
     'responsive-mode': 'leading',
     'stateful-mode': 'leading',
     'prefix': ''
@@ -89,13 +88,14 @@ $my-options: (
 $svala-options: map-merge($svala-default-options, $my-options);
 ```
 
-Here we're adding a set of breakpoints and tell Svala to output classes with leading _breakpoint_ and _state_ information (a style popularized by Tailwind CSS) like `.lg:border` or even `.lg:hover:border-bottom`. 
+Here we're adding a set of breakpoints and tell Svala to output classes without a prefix, but with leading _breakpoint_ and _state_ information (a style popularized by Tailwind CSS) like `.lg:border` or even `.lg:hover:border-bottom`. 
 
 ### Generate your utility classes
 
 Svala uses nested Sass [maps](https://sass-lang.com/documentation/values/maps) and [lists](https://sass-lang.com/documentation/values/lists) for configuration. The following parameters can be configured:
 
 Parameter | Type | Default | Description
+--------- | ---- | ------- | -----------
 property | string | none | **Required**. Must be a valid CSS property.
 value | string | null | The value that should be applied to the property. One of either value or items are required.
 axes | map or list | null | A list of axes. Must be valid CSS directions or axes.
