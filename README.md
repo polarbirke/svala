@@ -125,10 +125,10 @@ $config: (
 
 This assigns a map to `$config`. The _key_ of the only map entry, 'border', is your base selector and its value – a nested map – holds the rest of the settings for this particular class. 
 
-Now all that is left to do is to call the generator with your config:
+Now all that is left to do is to call the generator mixin with your config:
 
 ```
-@generator($config);
+@include generator($config);
 ```
 
 If you didn't change Svala's default options, this will create the following CSS output:
@@ -142,7 +142,7 @@ If you didn't change Svala's default options, this will create the following CSS
 Let's look at a second example and pass the config directly this time: 
 
 ```
-@generator((
+@include generator((
     'border': (
         'property': 'border',
         'axes': ('top', 'right', 'bottom', 'left'),
