@@ -91,7 +91,18 @@ $svala-options: map-merge($svala-default-options, $my-options);
 
 Here we're adding a set of breakpoints and tell Svala to output classes with leading _breakpoint_ and _state_ information (a style popularized by Tailwind CSS) like `.lg:border` or even `.lg:hover:border-bottom`. 
 
-### Config maps for the utility class generator 
+### Generate your utility classes
+
+Svala uses nested Sass [maps](https://sass-lang.com/documentation/values/maps) and [lists](https://sass-lang.com/documentation/values/lists) for configuration. The following parameters can be configured:
+
+Parameter | Type | Default | Description
+property | string | none | **Required**. Must be a valid CSS property.
+value | string | null | The value that should be applied to the property. One of either value or items are required.
+axes | map or list | null | A list of axes. Must be valid CSS directions or axes.
+items | map or list | null | A set of items. If items and value are defined, value is ignored.
+states | list | null | A list of pseudo-classes. Must be included in the supported pseudo-classes.  
+responsive | boolean | false | Determines whether to generate responsive class variants. Svala will use the breakpoints from the global config. 
+important | boolean | false | Determines whether `!important` should be added. Use with care.
 
 Start with importing the generator from the package:
 
@@ -101,7 +112,7 @@ Start with importing the generator from the package:
 @import "node_modules/svala/generator";
 ```
 
-Svala uses nested Sass [maps](https://sass-lang.com/documentation/values/maps) and [lists](https://sass-lang.com/documentation/values/lists) for configuration. You can pass a config map to the Svala generator directly or create a variable and pass that. Here we're using the latter:
+You can pass a config map to the Svala generator directly or create a variable and pass that. Here we're doing the latter:
 
 ```
 $config: (
@@ -112,7 +123,7 @@ $config: (
 );
 ```
 
-This assigns a map to `$config`. The _key_ of the map entry, 'border', is your base selector and its value – a nested map – holds the rest of the settings for this particular class. 
+This assigns a map to `$config`. The _key_ of the only map entry, 'border', is your base selector and its value – a nested map – holds the rest of the settings for this particular class. 
 
 Now all that is left to do is to call the generator with your config:
 
@@ -128,7 +139,7 @@ If you didn't change Svala's default options, this will create the following CSS
 }
 ```
 
-Let's look at a second, more realistic example and pass the config directly this time: 
+Let's look at a second example and pass the config directly this time: 
 
 ```
 @generator((
@@ -164,10 +175,14 @@ With Svala's default options, this will result in
 }
 ```
 
+#### Axes
+
+#### Items
+
 #### States
 
-Please refer to https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes for a list of commonly recognized pseudo-classes.
+Svala supports a subset of [all possible pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) for use as states:
 
 ```
-
+'active', 'checked', 'disabled', 'empty', 'first', 'first-child', 'first-of-type', 'focus', 'focus-visible', 'focus-within', 'hover', 'invalid', 'last-child', 'last-of-type', 'link', 'only-child', 'only-of-type', 'optional', 'required', 'target', 'target-within', 'valid', 'visited'
 ```
