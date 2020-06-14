@@ -109,7 +109,7 @@ Start with importing the generator from the package:
 ```
 // This is an exmaple, your path to Svala may need to  
 // be different, depending on your folder structure 
-@import "node_modules/svala/generator";
+@import "node_modules/svala/scss/generator";
 ```
 
 You can pass a config map to the Svala generator directly or create a variable and pass that. Here we're doing the latter:
