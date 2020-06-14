@@ -14,9 +14,11 @@
     $prefix: map-get($svala-options, 'prefix'),
     $postfix: map-get($svala-options, 'postfix'),
     $important: null,
-    $nuclear: null,
 ) {
 
+    // Define a few private variables
+    // ----------------------------------------------------------------------------------------
+    $nuclear: null;
     // Set up a few guards with errors and warnings
     @if not $property {
         @error "Please make sure to provide the required parameter 'property'."
