@@ -19,7 +19,37 @@
     // Define a few private variables
     // ----------------------------------------------------------------------------------------
     $nuclear: null;
+
+    // States must be valid pseudo-classes; Svala only recognizes a sensible subset of all available pseudo-classes
+    // Miss one? Create a pull request! :)
+    $valid-states: (
+        'active',
+        'checked',
+        'disabled',
+        'empty',
+        'first',
+        'first-child',
+        'first-of-type',
+        'focus',
+        'focus-visible',
+        'focus-within',
+        'hover',
+        'invalid',
+        'last-child',
+        'last-of-type',
+        'link',
+        'only-child',
+        'only-of-type',
+        'optional',
+        'required',
+        'target',
+        'target-within',
+        'valid',
+        'visited',
+    );
+
     // Set up a few guards with errors and warnings
+    // ----------------------------------------------------------------------------------------
     @if not $property {
         @error "Please make sure to provide the required parameter 'property'."
     }
@@ -29,11 +59,29 @@
     }
 
     @if $axes and not is-list($axes) and not is-map($axes) {
-        @error "Please make sure that 'axes' is either a list or a map.";
+        $type: type-of($axes);
+
+        @error "'axes' is of type #{$type} but must be a list or a map.";
     }
 
     @if $items and not is-list($items) and not is-map($items) {
-        @error "Please make sure that 'items' is either a list or a map.";
+        $type: type-of($items);
+
+        @error "'items' is of type #{$type} but must be a list or a map.";
+    }
+
+    @if $states and not is-list($states) and not is-map($states) {
+        $type: type-of($states);
+
+        @error "'states' is of type #{$type} but must be a list or a map.";
+    }
+
+    @if $states {
+        @each $state in $states {
+            @if not index($valid-states, $state) {
+                @error "Unknown or unsupported pseudo-class ('state') in config: #{$state}. Please read the docs at https://github.com/polarbirke/svala#states for more information.";
+            }
+        }
     }
 
     // allow no selector to be passed if selector and value
