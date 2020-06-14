@@ -1,0 +1,316 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/tools/generate-classes';
+
+$spacings-map: (
+    '300': '0.75rem',
+    '400': '1rem'
+);
+
+$colors-map: (
+    'white': '#fefefe',
+    'black': '#222222'
+);
+
+@include describe('Test generate-classes Mixin') {
+    @include it('A simple call with property and value only') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $property: 'position',
+                    $value: 'relative'
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-relative {
+                    position: relative;
+                }
+            }
+        }
+    }
+
+    @include it('A simple call with property and value only, set to output !important') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $property: 'position',
+                    $value: 'fixed',
+                    $important: true
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-fixed {
+                    position: fixed !important;
+                }
+            }
+        }
+    }
+
+    @include it('A call with property and items') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $property: 'display',
+                    $items: ('block', 'inline', 'flex')
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-block {
+                    display: block;
+                }
+
+                .u-inline {
+                    display: inline;
+                }
+
+                .u-flex {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    @include it('A call with selector, property and items') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $selector: 'display',
+                    $property: 'display',
+                    $items: ('block', 'inline', 'flex')
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-display-block {
+                    display: block;
+                }
+
+                .u-display-inline {
+                    display: inline;
+                }
+
+                .u-display-flex {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    @include it('A call with selector, property, value and axis') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $selector: 'margin',
+                    $property: 'margin',
+                    $value: '1rem',
+                    $axes: ('top', 'right', 'bottom', 'left')
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-margin {
+                    margin: 1rem;
+                }
+
+                .u-margin-top {
+                    margin-top: 1rem;
+                }
+
+                .u-margin-right {
+                    margin-right: 1rem;
+                }
+
+                .u-margin-bottom {
+                    margin-bottom: 1rem;
+                }
+
+                .u-margin-left {
+                    margin-left: 1rem;
+                }
+            }
+        }
+    }
+
+    @include it('A call with selector, property, value and a custom axis map (with more than one property defined per axis)') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $selector: 'margin',
+                    $property: 'margin',
+                    $value: '1rem',
+                    $axes: (
+                        'top': 'top',
+                        'right': 'right',
+                        'bottom': 'bottom',
+                        'left': 'left',
+                        'horizontal': ('right', 'left'),
+                        'vertical': ('top', 'bottom')
+                    )
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-margin {
+                    margin: 1rem;
+                }
+
+                .u-margin-top {
+                    margin-top: 1rem;
+                }
+
+                .u-margin-right {
+                    margin-right: 1rem;
+                }
+
+                .u-margin-bottom {
+                    margin-bottom: 1rem;
+                }
+
+                .u-margin-left {
+                    margin-left: 1rem;
+                }
+
+                .u-margin-horizontal {
+                    margin-right: 1rem;
+                    margin-left: 1rem;
+                }
+
+                .u-margin-vertical {
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+
+    @include it('A call with selector, property, items and axis') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $selector: 'padding',
+                    $property: 'padding',
+                    $axes: ('top', 'bottom'),
+                    $items: $spacings-map
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-padding-300 {
+                    padding: 0.75rem;
+                }
+
+                .u-padding-400 {
+                    padding: 1rem;
+                }
+
+                .u-padding-top-300 {
+                    padding-top: 0.75rem;
+                }
+
+                .u-padding-top-400 {
+                    padding-top: 1rem;
+                }
+
+                .u-padding-bottom-300 {
+                    padding-bottom: 0.75rem;
+                }
+
+                .u-padding-bottom-400 {
+                    padding-bottom: 1rem;
+                }
+            }
+        }
+    }
+
+    @include it('A second example call with selector, property, items and axis') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $selector: 'overflow',
+                    $property: 'overflow',
+                    $axes: ('x', 'y'),
+                    $items: ('hidden', 'auto', 'scroll')
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-overflow-hidden {
+                    overflow: hidden;
+                }
+
+                .u-overflow-auto {
+                    overflow: auto;
+                }
+
+                .u-overflow-scroll {
+                    overflow: scroll;
+                }
+
+                .u-overflow-x-hidden {
+                    overflow-x: hidden;
+                }
+
+                .u-overflow-x-auto {
+                    overflow-x: auto;
+                }
+
+                .u-overflow-x-scroll {
+                    overflow-x: scroll;
+                }
+
+                .u-overflow-y-hidden {
+                    overflow-y: hidden;
+                }
+
+                .u-overflow-y-auto {
+                    overflow-y: auto;
+                }
+
+                .u-overflow-y-scroll {
+                    overflow-y: scroll;
+                }
+            }
+        }
+    }
+
+    @include it('A call with selector, property and items over different states') {
+        @include assert {
+            @include output($selector: false) {
+                @include generate-classes(
+                    $selector: 'bg',
+                    $property: 'background-color',
+                    $items: $colors-map,
+                    $states: ('hover', 'focus')
+                );
+            }
+
+            @include expect($selector: false) {
+                .u-bg-white {
+                    background-color: #fefefe;
+                }
+
+                .u-bg-white\@hover:hover {
+                    background-color: #fefefe;
+                }
+
+                .u-bg-white\@focus:focus {
+                    background-color: #fefefe;
+                }
+
+                .u-bg-black {
+                    background-color: #222222;
+                }
+
+                .u-bg-black\@hover:hover {
+                    background-color: #222222;
+                }
+
+                .u-bg-black\@focus:focus {
+                    background-color: #222222;
+                }
+            }
+        }
+    }
+}

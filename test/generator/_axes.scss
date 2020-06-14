@@ -1,0 +1,100 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/tools/generator';
+
+$breakpoints-map: (
+    'tablet': 'min-width: 768px',
+    'desktop': 'min-width: 1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map,
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test generator with axis') {
+    @include it('Generate three utility classes (a generic one as well as one for each axis)') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'crop': (
+                        'property': 'overflow',
+                        'value': 'hidden',
+                        'axes': ('x', 'y')
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-crop {
+                    overflow: hidden;
+                }
+
+                .u-crop-x {
+                    overflow-x: hidden;
+                }
+
+                .u-crop-y {
+                    overflow-y: hidden;
+                }
+            }
+        }
+    }
+
+    @include it('Generate 18 utility classes (a generic one plus one for each axis as well as their responsive variants)') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'no-overscroll': (
+                        'property': 'overscroll-behavior',
+                        'value': 'none',
+                        'axes': ('x', 'y'),
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-no-overscroll {
+                    overscroll-behavior: none;
+                }
+
+                .u-no-overscroll-x {
+                    overscroll-behavior-x: none;
+                }
+
+                .u-no-overscroll-y {
+                    overscroll-behavior-y: none;
+                }
+
+                @media (min-width: 768px) {
+                    .u-no-overscroll\@tablet {
+                        overscroll-behavior: none;
+                    }
+
+                    .u-no-overscroll-x\@tablet {
+                        overscroll-behavior-x: none;
+                    }
+
+                    .u-no-overscroll-y\@tablet {
+                        overscroll-behavior-y: none;
+                    }
+                }
+
+                @media (min-width: 1280px) {
+                    .u-no-overscroll\@desktop {
+                        overscroll-behavior: none;
+                    }
+
+                    .u-no-overscroll-x\@desktop {
+                        overscroll-behavior-x: none;
+                    }
+
+                    .u-no-overscroll-y\@desktop {
+                        overscroll-behavior-y: none;
+                    }
+                }
+            }
+        }
+    }
+}

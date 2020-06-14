@@ -1,0 +1,40 @@
+@import 'generate-classes';
+
+@mixin map-iterator($config-map, $breakpoint-modifier: null, $is-responsive-iteration: false) {
+    $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
+    $prefix: map-get($svala-options, 'prefix');
+    $postfix: map-get($svala-options, 'postfix');
+
+    @if $is-responsive-iteration {
+        @if (map-get($svala-options, 'responsive-mode') == 'trailing') {
+            $postfix: #{$postfix + $breakpoint-modifier-divider + $breakpoint-modifier};
+        } @else if (map-get($svala-options, 'responsive-mode') == 'leading') {
+            $prefix: #{$breakpoint-modifier + $breakpoint-modifier-divider + $prefix};
+        }
+    }
+
+    @each $token, $token-map in $config-map {
+        $property: map-get($token-map, 'property');
+        $selector: $token;
+        $value: map-get($token-map, 'value');
+        $items: map-get($token-map, 'items') or null;
+        $axes: map-get($token-map, 'axes') or null;
+        $states: map-get($token-map, 'states') or null;
+        $responsive: map-get($token-map, 'responsive') or false;
+        $important: map-get($token-map, 'important') or false;
+
+        @if ($responsive or not $is-responsive-iteration) {
+            @include generate-classes(
+                $property: $property,
+                $selector: $selector,
+                $value: $value,
+                $items: $items,
+                $axes: $axes,
+                $states: $states,
+                $prefix: $prefix,
+                $postfix: $postfix,
+                $important: $important
+            );
+        }
+    }
+}

@@ -1,0 +1,16 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/helpers/selector-transformers';
+
+$selector: 'u-margin';
+$axis: ('inline-start', 'inline-end');
+
+@include describe('getAxifiedSelector() function') {
+    @include it('Concatenates the axis-modifier and -divider to the selector') {
+        @each $axis-modifier in $axis {
+            @include assert-equal(
+                getAxifiedSelector($selector, $axis-modifier),
+                    #{'u-margin-' + $axis-modifier}
+            )
+        }
+    }
+}

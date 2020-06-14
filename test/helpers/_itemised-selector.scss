@@ -1,0 +1,16 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/helpers/selector-transformers';
+
+$selector: 'u-padding';
+$items: ('medium': '2rem', 'large': '4rem');
+
+@include describe('getItemisedSelector() function') {
+    @include it('Concatenates the item-modifier and -divider to the selector') {
+        @each $item-modifier in $items {
+            @include assert-equal(
+                getItemisedSelector($selector, $item-modifier),
+                #{'u-padding-' + $item-modifier}
+            )
+        }
+    }
+}

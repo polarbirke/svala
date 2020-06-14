@@ -1,0 +1,94 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/tools/generator';
+
+$breakpoints-map: (
+    'tablet': 'min-width: 768px',
+    'desktop': 'min-width: 1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test generator with the simplest possible config (only property and value)') {
+    @include it('Generate a single utility class') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'absolute': (
+                        'property': 'position',
+                        'value': 'absolute'
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-absolute {
+                    position: absolute;
+                }
+            }
+        }
+    }
+
+    @include it('Generate a single utility class and its responsive variants') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'relative': (
+                        'property': 'position',
+                        'value': 'relative',
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-relative {
+                    position: relative;
+                }
+
+                @media (min-width: 768px) {
+                    .u-relative\@tablet {
+                        position: relative;
+                    }
+                }
+
+                @media (min-width: 1280px) {
+                    .u-relative\@desktop {
+                        position: relative;
+                    }
+                }
+            }
+        }
+    }
+
+    @include it('Generate a single utility class and its different states') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'underline': (
+                        'property': 'text-decoration',
+                        'value': 'underline',
+                        'states': ('hover', 'focus')
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-underline {
+                    text-decoration: underline;
+                }
+
+                .u-underline\@hover:hover {
+                    text-decoration: underline;
+                }
+
+                .u-underline\@focus:focus {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

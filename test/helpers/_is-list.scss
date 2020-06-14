@@ -1,0 +1,25 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/helpers/checks';
+
+$map: (
+    'apples': 2,
+    'oranges': 4
+);
+
+$list: ('cats', 'dogs');
+
+$string: 'Life is a beach';
+
+@include describe('is-list() function') {
+    @include it('Returns true for a list') {
+        @include assert-true(is-list($list))
+    }
+
+    @include it('Returns false for a map') {
+        @include assert-false(is-list($map))
+    }
+
+    @include it('Returns false for a string') {
+        @include assert-false(is-list($string))
+    }
+}

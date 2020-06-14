@@ -1,0 +1,16 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/helpers/selector-transformers';
+
+$selector: 'u-color-hotpink';
+$states: ('visited', 'link');
+
+@include describe('getStatefulSelector() function') {
+    @include it('Concatenates the state-modifier and -divider to the selector') {
+        @each $state-modifier in $states {
+            @include assert-equal(
+                getStatefulSelector($selector, $state-modifier),
+                #{'u-color-hotpink\\@' + $state-modifier}
+            )
+        }
+    }
+}

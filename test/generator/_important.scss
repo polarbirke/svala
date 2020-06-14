@@ -1,0 +1,26 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/tools/generator';
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test with !important') {
+    @include it('Generate a single utility class with !important') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'clear-left': (
+                        'property': 'clear',
+                        'value': 'left',
+                        'important': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .clear-left {
+                    clear: left !important;
+                }
+            }
+        }
+    }
+}

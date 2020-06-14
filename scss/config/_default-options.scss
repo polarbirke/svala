@@ -1,0 +1,16 @@
+$svala-default-options: (
+    'axes': null,
+    'items': null,
+    'states': null,
+    'breakpoints': null,
+    'prefix': 'u-',
+    'postfix': '',
+    'axis-modifier-divider': '-',
+    'item-modifier-divider': '-',
+    'state-modifier-divider': '\\@',
+    'breakpoint-modifier-divider': '\\@',
+    'stateful-mode': 'trailing',
+    'responsive-mode': 'trailing',
+) !default;
+
+$svala-options: $svala-default-options !default;

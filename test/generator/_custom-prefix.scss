@@ -1,0 +1,29 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/tools/generator';
+
+$my-options: (
+    'prefix': 'yolo-'
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test custom prefix') {
+    @include it('Generate a single utility class with a custom prefix') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'float-right': (
+                        'property': 'float',
+                        'value': 'right'
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .yolo-float-right {
+                    float: right;
+                }
+            }
+        }
+    }
+}

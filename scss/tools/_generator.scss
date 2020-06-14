@@ -1,0 +1,17 @@
+@import '../config/default-options';
+@import 'map-iterator';
+
+@mixin generator($config) {
+    $breakpoints: map-get($svala-options, 'breakpoints');
+    $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
+
+    @include map-iterator($config, $breakpoint-modifier: '');
+
+    @if $breakpoints {
+        @each $breakpoint-modifier, $breakpoint in $breakpoints {
+            @media (#{$breakpoint}) {
+                @include map-iterator($config, $breakpoint-modifier, $is-responsive-iteration: true);
+            }
+        }
+    }
+}

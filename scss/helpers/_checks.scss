@@ -1,0 +1,7 @@
+@function is-list($var){
+    @return type-of($var) == 'list';
+}
+
+@function is-map($var){
+    @return type-of($var) == 'map';
+}
