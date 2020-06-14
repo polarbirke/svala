@@ -18,7 +18,7 @@
         $selector: $token;
         $value: map-get($token-map, 'value');
         $items: map-get($token-map, 'items') or null;
-        $axes: map-get($token-map, 'axes') or null;
+        $axes: map-get($token-map, 'axes') or map-get($token-map, 'axis') or null;
         $states: map-get($token-map, 'states') or null;
         $responsive: map-get($token-map, 'responsive') or false;
         $important: map-get($token-map, 'important') or false;
