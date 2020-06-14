@@ -1,9 +1,17 @@
-@import '../config/default-options';
-@import 'map-iterator';
+@import 'config/default-options';
+@import 'tools/map-iterator';
 
 @mixin generator($config) {
     $breakpoints: map-get($svala-options, 'breakpoints');
     $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
+
+    // Set up a few guards with errors and warnings
+    // ----------------------------------------------------------------------------------------
+    @if $breakpoints and not is-map($breakpoints) {
+        $type: type-of($breakpoints);
+
+        @error "'breakpoints' is of type #{$type} but must be a list or a map.";
+    }
 
     @include map-iterator($config, $breakpoint-modifier: '');
 
