@@ -7,7 +7,7 @@ Svala is a tool to quickly generate CSS utility classes and design tokens.
 - **Responsive**. It should go without saying, but yes: Svala handles your breakpoints and generates classes for responsive use, e.g. `.hidden@desktop` or `.lg:hidden` – it's up to you how you configure it. 
 - **Small footprint**. There is no default output – Svala only generates what you configure. Grow your utility classes with the requirements of your project and keep your CSS lean and clean.
 
-If you have not heard of utility classes or design tokens before, there are plenty of fantastic articles about them online – use your search engine of choice! You can also read ["CSS and Scalability"](http://mrmrs.io/writing/2016/03/24/scalable-css/) by Adam Morse, the creator of [Tachyons](https://tachyons.io/). This is the article that literally rewired our brain when it was published.    
+If you have not heard of utility classes or design tokens before, there are plenty of fantastic articles about them online – use your search engine of choice! You can also watch ["In Defense of Utility-First CSS"](https://www.youtube.com/watch?v=R50q4NES6Iw), an excellent talk by Sarah Dayan at dotCSS 2019, or read ["CSS and Scalability"](http://mrmrs.io/writing/2016/03/24/scalable-css/) by Adam Morse, the creator of [Tachyons](https://tachyons.io/) (this is the article that literally rewired our brain when it was published).    
 
 ## Installation
 
