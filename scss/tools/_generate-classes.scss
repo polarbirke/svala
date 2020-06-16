@@ -84,11 +84,14 @@
         }
     }
 
-    // allow no selector to be passed if selector and value
+    // [1] allow no selector to be passed if selector and value
     // are identical like .u-flex { display: flex; }
     @if not $selector and $value { $selector: $value }
 
-    // in that case no item-modifier-divider is needed
+    // [2] allow to pass in a keyword that will set item-modifiers as base selectors
+    @if $selector == map-get($svala-options, 'item-selector-keyword') { $selector: null };
+
+    // in case of [1] or [2] no item-modifier-divider is needed
     @if not $selector and $items {
         $selector: '';
         $item-modifier-divider: '';

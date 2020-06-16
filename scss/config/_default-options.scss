@@ -8,6 +8,7 @@ $svala-default-options: (
     'breakpoint-modifier-divider': '\\@',
     'stateful-mode': 'trailing',
     'responsive-mode': 'trailing',
+    'item-selector-keyword': 'USE_ITEMS'
 ) !default;
 
 $svala-options: $svala-default-options !default;

@@ -1,0 +1,27 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+@include describe('Test generator with a config where items are the base selector') {
+    @include it('Generate two utility classes (one for each item in items)') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'USE_ITEMS': (
+                        'property': 'font-weight',
+                        'items': ('bold': 700, 'regular': 400)
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-bold {
+                    font-weight: 700;
+                }
+
+                .u-regular {
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}
