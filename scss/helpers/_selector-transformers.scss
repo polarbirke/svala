@@ -1,8 +1,10 @@
 @import '../config/default-options';
 
-@function getStatefulSelector($selector, $state-modifier) {
-    $state-modifier-divider: map-get($svala-options, 'state-modifier-divider');
-
+@function getStatefulSelector(
+    $selector,
+    $state-modifier,
+    $state-modifier-divider: map-get($svala-options, 'state-modifier-divider')
+) {
     @if (map-get($svala-options, 'stateful-mode') == 'trailing') {
         $selector: #{$selector + $state-modifier-divider + $state-modifier};
     } @else if (map-get($svala-options, 'stateful-mode') == 'leading') {
