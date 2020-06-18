@@ -13,7 +13,7 @@
     $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
     $prefix: map-get($svala-options, 'prefix'),
     $postfix: map-get($svala-options, 'postfix'),
-    $important: null,
+    $important: false,
 ) {
 
     // Define a few private variables
