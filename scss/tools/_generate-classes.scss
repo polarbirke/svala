@@ -9,6 +9,7 @@
     $item-modifier-divider: map-get($svala-options, 'item-modifier-divider'),
     $axes: null,
     $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider'),
+    $axes-shorthand: false,
     $states: null,
     $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
     $prefix: map-get($svala-options, 'prefix'),
@@ -100,6 +101,13 @@
     // set important if requested
     @if $important { $nuclear: ' !important' }
 
+    // reset axis-modifier-divider to empty string if axes-shorthand is requested
+    // for a certain utility class (but not globally)
+    @if $axes-shorthand {
+        $axis-modifier-divider: '';
+    }
+
+
     // one-off token classes like .u-block or .u-relative
     @if not $items and not $axes {
         .#{$prefix}#{$selector}#{$postfix} {
@@ -142,7 +150,7 @@
 
         // …then one for each axis
         @each $axis-modifier, $axis in $axes {
-            $axified-selector: getAxifiedSelector($selector, $axis-modifier);
+            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
 
             @if not $axis { $axis: $axis-modifier }
 
@@ -228,7 +236,7 @@
 
         // …then one for each axis
         @each $axis-modifier, $axis in $axes {
-            $axified-selector: getAxifiedSelector($selector, $axis-modifier);
+            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
 
             @if not $axis { $axis: $axis-modifier }
 

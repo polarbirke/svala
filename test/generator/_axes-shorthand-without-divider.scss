@@ -1,0 +1,58 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+@include describe('Test a local override of axis-modifier-divider for output like ".u-mt"') {
+    @include it('Generate margin utility classes in shorthand style') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'm': (
+                        'property': 'margin',
+                        'value': '2rem',
+                        'axes-shorthand': true,
+                        'axes': (
+                            't': 'top',
+                            'r': 'right',
+                            'b': 'bottom',
+                            'l': 'left',
+                            'h': ('right', 'left'),
+                            'v': ('top', 'bottom')
+                        )
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-m {
+                    margin: 2rem;
+                }
+
+                .u-mt {
+                    margin-top: 2rem;
+                }
+
+                .u-mr {
+                    margin-right: 2rem;
+                }
+
+                .u-mb {
+                    margin-bottom: 2rem;
+                }
+
+                .u-ml {
+                    margin-left: 2rem;
+                }
+
+                .u-mh {
+                    margin-right: 2rem;
+                    margin-left: 2rem;
+                }
+
+                .u-mv {
+                    margin-top: 2rem;
+                    margin-bottom: 2rem;
+                }
+            }
+        }
+    }
+}
