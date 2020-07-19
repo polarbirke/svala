@@ -20,7 +20,7 @@ $svala-options: map-merge($svala-default-options, $my-options);
                     'crop': (
                         'property': 'overflow',
                         'value': 'hidden',
-                        'axes': ('x', 'y')
+                        'axes': x y
                     )
                 ));
             }

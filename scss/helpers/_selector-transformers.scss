@@ -22,10 +22,10 @@
     @return #{$selector + $axis-modifier-divider + $axis-modifier}
 }
 
-@function getItemisedSelector(
+@function getValuatedSelector(
     $selector,
-    $item-modifier,
-    $item-modifier-divider: map-get($svala-options, 'item-modifier-divider')
+    $value-modifier,
+    $value-modifier-divider: map-get($svala-options, 'value-modifier-divider')
 ) {
-    @return #{$selector + $item-modifier-divider + $item-modifier}
+    @return #{$selector + $value-modifier-divider + $value-modifier}
 }

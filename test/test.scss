@@ -1,8 +1,9 @@
 // helpers
 @import 'helpers/is-map';
 @import 'helpers/is-list';
+@import 'helpers/is-string';
 @import 'helpers/axified-selector';
-@import 'helpers/itemised-selector';
+@import 'helpers/valuated-selector';
 @import 'helpers/stateful-selector';
 
 // mixin
@@ -13,11 +14,11 @@
 @import 'generator/no-prefix';
 @import 'generator/important';
 @import 'generator/value';
-@import 'generator/items';
-@import 'generator/items-as-selector';
+@import 'generator/values';
+@import 'generator/values-as-selector';
 @import 'generator/axes';
-@import 'generator/axes-items';
+@import 'generator/axes-values';
 @import 'generator/axes-multiple-properties';
 @import 'generator/axes-shorthand-without-divider';
 @import 'generator/tailwind-syntax';
-@import 'generator/bem-notation-for-items';
+@import 'generator/bem-notation-for-values';

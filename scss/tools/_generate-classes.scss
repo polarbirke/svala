@@ -4,9 +4,9 @@
 @mixin generate-classes(
     $property,
     $selector: null,
-    $value: null,
-    $items: null,
-    $item-modifier-divider: map-get($svala-options, 'item-modifier-divider'),
+    $value: null, // allow singular key to be passed for better developer experience
+    $values: null,
+    $value-modifier-divider: map-get($svala-options, 'value-modifier-divider'),
     $axes: null,
     $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider'),
     $axes-shorthand: false,
@@ -52,23 +52,40 @@
     // Set up a few guards with errors and warnings
     // ----------------------------------------------------------------------------------------
     @if not $property {
-        @error "Please make sure to provide the required parameter 'property'."
+        @error "Please provide the required parameter 'property'."
     }
 
-    @if $value and $items {
-        @warn "Heads up: 'value' has no effect if you supply 'items'!";
+    @if not $value and not $values {
+        @error "Please provide the required parameter 'values'."
+    }
+
+    @if $values and not is-string($values) and not is-list($values) and not is-map($values) {
+        $type: type-of($values);
+
+        @error "'values' is of type #{$type} but must be a string, a list or a map.";
+    }
+
+    // Warning: 'values' always wins
+    @if $value and $values {
+        @warn "Heads up: 'value' (singular) has no effect if you pass 'values' (plural)!";
+    }
+
+    // Map wrong user input to correct internal variable if necessary (1/2): singular to plural
+    @if $value and not $values {
+        @if is-list($value) or is-map($value) {
+            $values: $value;
+        }
+    }
+
+    // Map wrong user input to correct internal variable if necessary (2/2): plural to singular
+    @if $values and is-string($values) {
+        $value: $values;
     }
 
     @if $axes and not is-list($axes) and not is-map($axes) {
         $type: type-of($axes);
 
         @error "'axes' is of type #{$type} but must be a list or a map.";
-    }
-
-    @if $items and not is-list($items) and not is-map($items) {
-        $type: type-of($items);
-
-        @error "'items' is of type #{$type} but must be a list or a map.";
     }
 
     @if $states and not is-list($states) and not is-map($states) {
@@ -89,13 +106,13 @@
     // are identical like .u-flex { display: flex; }
     @if not $selector and $value { $selector: $value }
 
-    // [2] allow to pass in a keyword that will set item-modifiers as base selectors
-    @if $selector == map-get($svala-options, 'item-selector-keyword') { $selector: null };
+    // [2] allow to pass in a keyword that will set value-modifiers as base selectors
+    @if $selector == map-get($svala-options, 'value-selector-keyword') { $selector: null };
 
-    // in case of [1    ] or [2] no item-modifier-divider is needed
-    @if not $selector and $items {
+    // in case of [1    ] or [2] no value-modifier-divider is needed
+    @if not $selector and $values {
         $selector: '';
-        $item-modifier-divider: '';
+        $value-modifier-divider: '';
     }
 
     // set important if requested
@@ -109,7 +126,7 @@
 
 
     // one-off token classes like .u-block or .u-relative
-    @if not $items and not $axes {
+    @if not $values and not $axes {
         .#{$prefix}#{$selector}#{$postfix} {
             #{$property}: #{$value}#{$nuclear};
         }
@@ -129,7 +146,7 @@
 
     // one-off token classes, but with axis modifiers like x, y
     // or top, right, left, bottom or start, end, center
-    @if $axes and not $items {
+    @if $axes and not $values {
 
         // do one cycle for the generic class…
         .#{$prefix}#{$selector}#{$postfix} {
@@ -184,19 +201,19 @@
         }
     }
 
-    @if $items and not $axes {
-        @each $item-modifier, $value in $items {
-            $itemised-selector: getItemisedSelector($selector, $item-modifier, $item-modifier-divider);
+    @if $values and not $axes {
+        @each $value-modifier, $value in $values {
+            $valuated-selector: getValuatedSelector($selector, $value-modifier, $value-modifier-divider);
 
-            @if not $value { $value: $item-modifier }
+            @if not $value { $value: $value-modifier }
 
-            .#{$prefix}#{$itemised-selector}#{$postfix} {
+            .#{$prefix}#{$valuated-selector}#{$postfix} {
                 #{$property}: #{$value}#{$nuclear};
             }
 
             @if $states {
                 @each $state-modifier in $states {
-                    $stateful-selector: getStatefulSelector($itemised-selector, $state-modifier);
+                    $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
 
                     .#{$prefix}#{$stateful-selector}#{$postfix} {
                         &:#{$state-modifier} {
@@ -210,7 +227,7 @@
 
     // token classes with axis modifiers and a scale like
     // .u-margin-top-xl or .u-font-weight-400
-    @if $axes and $items {
+    @if $axes and $values {
         
         // do one cycle for the generic class…
         .#{$prefix}#{$selector}#{$postfix} {
@@ -218,18 +235,18 @@
         }
 
         // …then do one cycle for the generic class with item modifier only
-        @each $item-modifier, $value in $items {
-            $itemised-selector: getItemisedSelector($selector, $item-modifier);
+        @each $value-modifier, $value in $values {
+            $valuated-selector: getValuatedSelector($selector, $value-modifier);
 
-            @if not $value { $value: $item-modifier }
+            @if not $value { $value: $value-modifier }
 
-            .#{$prefix}#{$itemised-selector}#{$postfix} {
+            .#{$prefix}#{$valuated-selector}#{$postfix} {
                 #{$property}: #{$value}#{$nuclear};
             }
 
             @if $states {
                 @each $state-modifier in $states {
-                    $stateful-selector: getStatefulSelector($itemised-selector, $state-modifier);
+                    $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
 
                     .#{$prefix}#{$stateful-selector}#{$postfix} {
                         &:#{$state-modifier} {
@@ -246,12 +263,12 @@
 
             @if not $axis { $axis: $axis-modifier }
 
-            @each $item-modifier, $value in $items {
-                $itemised-selector: getItemisedSelector($axified-selector, $item-modifier);
+            @each $value-modifier, $value in $values {
+                $valuated-selector: getValuatedSelector($axified-selector, $value-modifier);
 
-                @if not $value { $value: $item-modifier }
+                @if not $value { $value: $value-modifier }
 
-                .#{$prefix}#{$itemised-selector}#{$postfix} {
+                .#{$prefix}#{$valuated-selector}#{$postfix} {
                     @if is-list($axis) {
                         @each $axis in $axis {
                             #{$property}-#{$axis}: #{$value}#{$nuclear};
@@ -263,7 +280,7 @@
 
                 @if $states {
                     @each $state-modifier in $states {
-                        $stateful-selector: getStatefulSelector($itemised-selector, $state-modifier);
+                        $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
 
                         .#{$prefix}#{$stateful-selector}#{$postfix} {
                             &:#{$state-modifier} {

@@ -17,14 +17,14 @@ $colors-map: (
     'seashell': '#f1f1f1'
 );
 
-@include describe('Test generator with a config map containing a property and an items map') {
-    @include it('Generate three utility classes (one for each item in items)') {
+@include describe('Test generator with a config map containing a property and a list of values') {
+    @include it('Generate three utility classes (one for each list-item in values)') {
         @include assert {
             @include output($selector: false) {
                 @include generator((
                     'ai': (
                         'property': 'align-items',
-                        'items': ('flex-start', 'flex-end', 'center')
+                        'values': flex-start flex-end center
                     )
                 ));
             }
@@ -45,13 +45,13 @@ $colors-map: (
         }
     }
 
-    @include it('Generate three utility classes (one for each item in items) and their responsive variants') {
+    @include it('Generate three utility classes (one for each list-item in values) and their responsive variants') {
         @include assert {
             @include output($selector: false) {
                 @include generator((
                     'align-items': (
                         'property': 'align-items',
-                        'items': ('flex-start', 'flex-end', 'center'),
+                        'values': flex-start flex-end center,
                         'responsive': true
                     )
                 ));
@@ -101,13 +101,13 @@ $colors-map: (
         }
     }
 
-    @include it('Generate two utility classes (one for each item in items) as well as two additional states for each') {
+    @include it('Generate two utility classes (one for each key,value pair in the map of values) as well as two additional states for each') {
         @include assert {
             @include output($selector: false) {
                 @include generator((
                     'bg': (
                         'property': 'background-color',
-                        'items': $colors-map,
+                        'values': $colors-map,
                         'states': ('hover', 'focus')
                     )
                 ));

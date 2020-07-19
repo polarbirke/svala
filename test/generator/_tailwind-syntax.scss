@@ -38,7 +38,7 @@ $spacings-map: (
                             'x': ('right', 'left'),
                             'y': ('top', 'bottom')
                         ),
-                        'items': $spacings-map
+                        'values': $spacings-map
                     )
                 ));
             }

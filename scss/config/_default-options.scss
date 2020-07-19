@@ -3,12 +3,12 @@ $svala-default-options: (
     'prefix': 'u-',
     'postfix': '',
     'axis-modifier-divider': '-',
-    'item-modifier-divider': '-',
+    'value-modifier-divider': '-',
     'state-modifier-divider': '\\@',
     'breakpoint-modifier-divider': '\\@',
     'stateful-mode': 'trailing',
     'responsive-mode': 'trailing',
-    'item-selector-keyword': 'USE_ITEMS'
+    'value-selector-keyword': 'USE_VALUES'
 ) !default;
 
 $svala-options: $svala-default-options !default;

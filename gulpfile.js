@@ -1,7 +1,7 @@
 'use strict';
 
 const gulp = require('gulp');
-//const log = require('fancy-log');
+// const log = require('fancy-log');
 const sass = require('gulp-sass');
 
 gulp.task('test-scss', function() {

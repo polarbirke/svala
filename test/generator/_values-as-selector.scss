@@ -6,9 +6,9 @@
         @include assert {
             @include output($selector: false) {
                 @include generator((
-                    'USE_ITEMS': (
+                    'USE_VALUES': (
                         'property': 'font-weight',
-                        'items': ('bold': 700, 'regular': 400)
+                        'values': ('bold': 700, 'regular': 400)
                     )
                 ));
             }

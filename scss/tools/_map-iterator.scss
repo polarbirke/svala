@@ -17,7 +17,7 @@
         $property: map-get($token-map, 'property');
         $selector: $token;
         $value: map-get($token-map, 'value');
-        $items: map-get($token-map, 'items') or null;
+        $values: map-get($token-map, 'values') or null;
         $axes: map-get($token-map, 'axes') or map-get($token-map, 'axis') or null;
         $axes-shorthand: map-get($token-map, 'axes-shorthand') or map-get($token-map, 'axis-shorthand') or false;
         $states: map-get($token-map, 'states') or null;
@@ -29,7 +29,7 @@
                 $property: $property,
                 $selector: $selector,
                 $value: $value,
-                $items: $items,
+                $values: $values,
                 $axes: $axes,
                 $axes-shorthand: $axes-shorthand,
                 $states: $states,

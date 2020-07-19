@@ -30,8 +30,8 @@ Svala is written in Sass, so you need Sass to run it. It doesn't matter if you l
 If you're thinking about utility classes, you're probably familiar with CSS ruleset terminology. Svala uses both well-defined terms like _selector_, _property_ and _value_, as well as a few others:
 
 - **base selector** (or _token_): The base name for your selector. Typically, you will use the CSS property you want to control for this, e.g. `margin` or `border`.
-- **axis**: Svala introduces a concept called _axes_ (plural, long 'e' 😉). An axis can be used to enhance a base selector with directional input, e.g. `margin-left` or `border-right`.
-- **item**: Svala also allows you to define an additional set of items to iterate over, e.g. a size scale for visual hierarchy or a set of different values like `auto`, `hidden`, `scroll`.
+- **value**: Values are the bread and butter of utility classes. Svala allows you to define a list or map of values to iterate over, e.g. a size scale for visual hierarchy or a set of different values like `auto`, `hidden`, `scroll`.
+- **axis**: Svala also introduces a concept called _axes_ (plural, long 'e' 😉). An axis can be used to enhance a base selector with directional input, e.g. `margin-left` or `border-right`.
 - **state**: If you need to factor pseudo-classes into your utilities, Svala has you covered. Use _states_ to generate class variants for `:hover`, `:focus` and others.
 - **breakpoint**: All your classes can be scoped to your project's breakpoints and cater to your responsive needs.
 - **prefix** and **postfix**: You can add extra bits to the beginning and/or end of your selectors by using _prefixes_ and _postfixes_. Use this to namespace your utility classes with `.u-`, for example.
@@ -42,7 +42,7 @@ Let's look at actual selectors:
 .margin-left-300@tablet { … }
 ```
 
-"margin" is the _base selector_, which is enhanced with "left" as an _axis_ and "300" as an _item_ from a size scale. It should only apply to "tablet" or greater (assuming a mobile-first approach with _breakpoints_). 
+"margin" is the _base selector_, which is enhanced with "left" as an _axis_ and "300" as the _value_ from a size scale. It should only apply to "tablet" or greater (assuming a mobile-first approach with _breakpoints_). 
 
 Here is a second example:
 
@@ -50,7 +50,7 @@ Here is a second example:
 .u-overflow-x-hidden { … }
 ```
 
-This selector uses a _prefix_ ".u-", the _base selector_ "overflow" and was enhanced with the _axis_ "x" as well as "hidden" from a set of _items_.
+This selector uses a _prefix_ ".u-", the _base selector_ "overflow" and was enhanced with the _axis_ "x" as well as "hidden" from a set of _values_.
 
 ### Output settings
 
@@ -62,11 +62,11 @@ breakpoints | map | null | Your project's breakpoints. Configure them as a map w
 prefix | string | 'u-' | An optional prefix for all your utility classes. Use it to avoid collisions ("namespace") with third-party CSS or distinguish utility classes from "regular" ones. You can also reset it by setting it to an empty string: `''`.
 postfix | string | '' | An optional postfix for all your utility classes. Use it for the same reasons as you would a prefix, or leave it empty.   
 axis-modifier-divider | string | '-' | The character joining your base selector and any axis, e.g. `.u-margin-left` or `.u-float-right`. Any valid characters are allowed, as is `''`.    
-item-modifier-divider | string | '-' | The character joining your selector and any items, e.g. `.u-overflow-hidden` for a value item or `.u-grey-200` for a scale item. Any valid characters are allowed, as is `''`. 
+value-modifier-divider | string | '-' | The character joining your selector and any values, e.g. `.u-overflow-hidden` for a named value or `.u-grey-200` for a scale item. Any valid characters are allowed, as is `''`. 
 state-modifier-divider| string | '\\@' | The character joining your selector and any state, e.g. `.u-border@hover`. Note that special characters like `:` or `@` that are commonly used for this purpose have to be escaped with a double backslash.   
 breakpoint-modifier-divider| string | '\\@' | The character joining your selector and any breakpoint name, e.g. `.u-hidden@desktop`. 
-stateful-mode | 'leading' or 'trailing' | 'trailing' | Define where states (e.g. 'hover' or 'visited') are added to selectors: prepended before the selector (but after both prefix and breakpoint, if applicable) or appended after axis and items.   
-responsive-mode | 'leading' or 'trailing' | 'trailing' |  Define where breakpoint names (e.g. 'tablet' or 'medium') are added to selectors: prepended before the selector (but after the prefix, if applicable) or appended after axis, items and state.
+stateful-mode | 'leading' or 'trailing' | 'trailing' | Define where states (e.g. 'hover' or 'visited') are added to selectors: prepended before the selector (but after both prefix and breakpoint, if applicable) or appended after axis and values.   
+responsive-mode | 'leading' or 'trailing' | 'trailing' |  Define where breakpoint names (e.g. 'tablet' or 'medium') are added to selectors: prepended before the selector (but after the prefix, if applicable) or appended after axis, values and state.
 
 Create a variable called `$svala-options` and use a map to set your preferences and merge those with Svala's defaults:
 
@@ -97,9 +97,8 @@ Svala uses nested Sass [maps](https://sass-lang.com/documentation/values/maps) a
 Parameter | Type | Default | Description
 --------- | ---- | ------- | -----------
 property | string | none | **Required**. Must be a valid CSS property.
-value | string | null | The value that should be applied to the property. One of either value or items are required.
+values | string or map or list | null | The value that should be applied to the property. Can be a single value passed as string, a list of named values or a map with key,value pairs.
 axes | map or list | null | A list of axes. Must be valid CSS directions or axes.
-items | map or list | null | A set of items. If items and value are defined, value is ignored.
 states | list | null | A list of pseudo-classes. Must be included in the supported pseudo-classes.  
 responsive | boolean | false | Determines whether to generate responsive class variants. Svala will use the breakpoints from the global config. 
 important | boolean | false | Determines whether `!important` should be added. Use with care.

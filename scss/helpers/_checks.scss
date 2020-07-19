@@ -5,3 +5,7 @@
 @function is-map($var){
     @return type-of($var) == 'map';
 }
+
+@function is-string($var){
+    @return type-of($var) == 'string';
+}

@@ -52,7 +52,7 @@ $colors-map: (
             @include output($selector: false) {
                 @include generate-classes(
                     $property: 'display',
-                    $items: ('block', 'inline', 'flex')
+                    $values: ('block', 'inline', 'flex')
                 );
             }
 
@@ -78,7 +78,7 @@ $colors-map: (
                 @include generate-classes(
                     $selector: 'display',
                     $property: 'display',
-                    $items: ('block', 'inline', 'flex')
+                    $values: ('block', 'inline', 'flex')
                 );
             }
 
@@ -192,7 +192,7 @@ $colors-map: (
                     $selector: 'padding',
                     $property: 'padding',
                     $axes: ('top', 'bottom'),
-                    $items: $spacings-map
+                    $values: $spacings-map
                 );
             }
 
@@ -231,7 +231,7 @@ $colors-map: (
                     $selector: 'overflow',
                     $property: 'overflow',
                     $axes: ('x', 'y'),
-                    $items: ('hidden', 'auto', 'scroll')
+                    $values: ('hidden', 'auto', 'scroll')
                 );
             }
 
@@ -281,7 +281,7 @@ $colors-map: (
                 @include generate-classes(
                     $selector: 'bg',
                     $property: 'background-color',
-                    $items: $colors-map,
+                    $values: $colors-map,
                     $states: ('hover', 'focus')
                 );
             }

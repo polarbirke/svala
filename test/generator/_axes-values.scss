@@ -25,7 +25,7 @@ $spacings-map: (
                     'margin': (
                         'property': 'margin',
                         'axes': ('top', 'bottom'),
-                        'items': $spacings-map
+                        'values': $spacings-map
                     )
                 ));
             }
@@ -65,7 +65,7 @@ $spacings-map: (
                     'padding': (
                         'property': 'padding',
                         'axes': ('top', 'bottom'),
-                        'items': $spacings-map,
+                        'values': $spacings-map,
                         'responsive': true
                     )
                 ));

@@ -2,7 +2,7 @@
 @import '../../scss/generator';
 
 $my-options: (
-    'item-modifier-divider': '--'
+    'value-modifier-divider': '--'
 );
 
 $svala-options: map-merge($svala-default-options, $my-options);
@@ -14,7 +14,7 @@ $svala-options: map-merge($svala-default-options, $my-options);
                 @include generator((
                     'text': (
                         'property': 'text-align',
-                        'items': ('right', 'left', 'center')
+                        'values': ('right', 'left', 'center')
                     )
                 ));
             }
