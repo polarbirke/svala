@@ -92,7 +92,7 @@
     // [2] allow to pass in a keyword that will set item-modifiers as base selectors
     @if $selector == map-get($svala-options, 'item-selector-keyword') { $selector: null };
 
-    // in case of [1] or [2] no item-modifier-divider is needed
+    // in case of [1    ] or [2] no item-modifier-divider is needed
     @if not $selector and $items {
         $selector: '';
         $item-modifier-divider: '';
@@ -211,7 +211,13 @@
     // token classes with axis modifiers and a scale like
     // .u-margin-top-xl or .u-font-weight-400
     @if $axes and $items {
-        // do one cycle for the generic class with item modifier only
+        
+        // do one cycle for the generic class…
+        .#{$prefix}#{$selector}#{$postfix} {
+            #{$property}: #{$value}#{$nuclear};
+        }
+
+        // …then do one cycle for the generic class with item modifier only
         @each $item-modifier, $value in $items {
             $itemised-selector: getItemisedSelector($selector, $item-modifier);
 
