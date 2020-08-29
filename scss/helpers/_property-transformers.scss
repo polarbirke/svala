@@ -1,0 +1,14 @@
+@import '../config/default-options';
+
+@function getAxifiedProperty(
+    $property,
+    $axis
+) {
+    @if $property == 'border-radius' {
+        $property: #{'border-' + $axis + '-radius'}
+    } @else {
+        $property: #{$property + '-' + $axis}
+    }
+
+    @return $property;
+}

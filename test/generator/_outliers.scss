@@ -1,0 +1,61 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    'tablet': 'min-width: 768px',
+    'desktop': 'min-width: 1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test difficult outliers, e.g.: border-radius') {
+    @include it('Generate valid border-radius classes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'rounded': (
+                        'property': 'border-radius',
+                        'value': '50%',
+                        'axes': $border-radius-axes
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-rounded {
+                    border-radius: 50%;
+                }
+
+                .u-rounded-top-right {
+                    border-top-right-radius: 50%;
+                }
+
+                .u-rounded-top-left {
+                    border-top-left-radius: 50%;
+                }
+
+                .u-rounded-bottom-right {
+                    border-bottom-right-radius: 50%;
+                }
+
+                .u-rounded-bottom-left {
+                    border-bottom-left-radius: 50%;
+                }
+
+                .u-rounded-top {
+                    border-top-right-radius: 50%;
+                    border-top-left-radius: 50%;
+                }
+
+                .u-rounded-bottom {
+                    border-bottom-right-radius: 50%;
+                    border-bottom-left-radius: 50%;
+                }
+            }
+        }
+    }
+}

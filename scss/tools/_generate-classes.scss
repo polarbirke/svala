@@ -1,5 +1,6 @@
 @import '../helpers/checks';
 @import '../helpers/selector-transformers';
+@import '../helpers/property-transformers';
 
 @mixin generate-classes(
     $property,
@@ -167,17 +168,19 @@
 
         // …then one for each axis
         @each $axis-modifier, $axis in $axes {
-            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
-
             @if not $axis { $axis: $axis-modifier }
+
+            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
 
             .#{$prefix}#{$axified-selector}#{$postfix} {
                 @if is-list($axis) {
                     @each $axis in $axis {
-                        #{$property}-#{$axis}: #{$value}#{$nuclear};
+                        $axified-property: getAxifiedProperty($property, $axis);
+                        #{$axified-property}: #{$value}#{$nuclear};
                     }
                 } @else {
-                    #{$property}-#{$axis}: #{$value}#{$nuclear};
+                    $axified-property: getAxifiedProperty($property, $axis);
+                    #{$axified-property}: #{$value}#{$nuclear};
                 }
             }
 
@@ -189,10 +192,12 @@
                         &:#{$state-modifier} {
                             @if is-list($axis) {
                                 @each $axis in $axis {
-                                    #{$property}-#{$axis}: #{$value}#{$nuclear};
+                                    $axified-property: getAxifiedProperty($property, $axis);
+                                    #{$axified-property}: #{$value}#{$nuclear};
                                 }
                             } @else {
-                                #{$property}-#{$axis}: #{$value}#{$nuclear};
+                                $axified-property: getAxifiedProperty($property, $axis);
+                                #{$axified-property}: #{$value}#{$nuclear};
                             }
                         }
                     }
@@ -259,9 +264,9 @@
 
         // …then one for each axis
         @each $axis-modifier, $axis in $axes {
-            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
-
             @if not $axis { $axis: $axis-modifier }
+
+            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
 
             @each $value-modifier, $value in $values {
                 $valuated-selector: getValuatedSelector($axified-selector, $value-modifier);
@@ -271,10 +276,12 @@
                 .#{$prefix}#{$valuated-selector}#{$postfix} {
                     @if is-list($axis) {
                         @each $axis in $axis {
-                            #{$property}-#{$axis}: #{$value}#{$nuclear};
+                            $axified-property: getAxifiedProperty($property, $axis);
+                            #{$axified-property}: #{$value}#{$nuclear};
                         }
                     } @else {
-                        #{$property}-#{$axis}: #{$value}#{$nuclear};
+                        $axified-property: getAxifiedProperty($property, $axis);
+                        #{$axified-property}: #{$value}#{$nuclear};
                     }
                 }
 
@@ -286,10 +293,12 @@
                             &:#{$state-modifier} {
                                 @if is-list($axis) {
                                     @each $axis in $axis {
-                                        #{$property}-#{$axis}: #{$value}#{$nuclear};
+                                        $axified-property: getAxifiedProperty($property, $axis);
+                                        #{$axified-property}: #{$value}#{$nuclear};
                                     }
                                 } @else {
-                                    #{$property}-#{$axis}: #{$value}#{$nuclear};
+                                    $axified-property: getAxifiedProperty($property, $axis);
+                                    #{$axified-property}: #{$value}#{$nuclear};
                                 }
                             }
                         }

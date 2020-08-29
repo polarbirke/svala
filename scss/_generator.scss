@@ -1,4 +1,5 @@
 @import 'config/default-options';
+@import 'config/default-helpers';
 @import 'tools/map-iterator';
 
 @mixin generator($config) {
