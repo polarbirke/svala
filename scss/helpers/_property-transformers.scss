@@ -4,8 +4,14 @@
     $property,
     $axis
 ) {
-    @if $property == 'border-radius' {
+    @if $property == 'border-color' {
+        $property: #{'border-' + $axis + '-color'}
+    } @else if $property == 'border-radius' {
         $property: #{'border-' + $axis + '-radius'}
+    } @else if $property == 'border-style' {
+        $property: #{'border-' + $axis + '-style'}
+    } @else if $property == 'border-width' {
+        $property: #{'border-' + $axis + '-width'}
     } @else {
         $property: #{$property + '-' + $axis}
     }
