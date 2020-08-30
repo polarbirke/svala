@@ -1,7 +1,9 @@
 $svala-default-options: (
     'breakpoints': null,
-    'prefix': 'u-',
+    'prefix': 'u',
+    'prefix-divider': '-',
     'postfix': '',
+    'postfix-divider': '-',
     'axis-modifier-divider': '-',
     'value-modifier-divider': '-',
     'state-modifier-divider': '\\@',

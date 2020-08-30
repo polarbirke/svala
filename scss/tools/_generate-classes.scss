@@ -13,8 +13,8 @@
     $axes-shorthand: false,
     $states: null,
     $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
-    $prefix: map-get($svala-options, 'prefix'),
-    $postfix: map-get($svala-options, 'postfix'),
+    $prefix: '',
+    $postfix: '',
     $important: false,
 ) {
 
@@ -124,7 +124,6 @@
     @if $axes-shorthand {
         $axis-modifier-divider: '';
     }
-
 
     // one-off token classes like .u-block or .u-relative
     @if not $values and not $axes {

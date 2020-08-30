@@ -2,13 +2,13 @@
 @import '../../scss/generator';
 
 $my-options: (
-    'prefix': 'yolo-'
+    'prefix': 'yolo'
 );
 
 $svala-options: map-merge($svala-default-options, $my-options);
 
 @include describe('Test custom prefix') {
-    @include it('Generate a single utility class with a custom prefix') {
+    @include it('Generate a single utility class with a custom global prefix') {
         @include assert {
             @include output($selector: false) {
                 @include generator((
@@ -22,6 +22,26 @@ $svala-options: map-merge($svala-default-options, $my-options);
             @include expect($selector: false) {
                 .yolo-float-right {
                     float: right;
+                }
+            }
+        }
+    }
+
+    @include it('Generate a single utility class with a custom local prefix') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'clearfix': (
+                        'property': 'clear',
+                        'value': 'both',
+                        'prefix': 'o'
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .o-clearfix {
+                    clear: both;
                 }
             }
         }
