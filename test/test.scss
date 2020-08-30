@@ -6,9 +6,6 @@
 @import 'helpers/valuated-selector';
 @import 'helpers/stateful-selector';
 
-// mixin
-@import 'mixin/generate-classes-mixin';
-
 // generator with config maps
 @import 'generator/custom-prefix';
 @import 'generator/no-prefix';
