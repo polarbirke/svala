@@ -169,19 +169,42 @@ If you didn't change Svala's default options, this will create the following CSS
 }
 ```
 
-Let's look at a second example and pass the config directly this time: 
+Let's look at a second example and pass the config directly this time:
+
+```
+@include generator((
+    'position-absolute': (
+        'property': 'position',
+        'value': 'absolute'
+    )
+));
+```
+
+With Svala's default options, this will result in:
+
+```
+.u-position-absolute {
+    position: absolute;
+}
+```
+
+#### Axes
+
+There are many CSS properties that can affect a specific direction. This includes the `-top`, `-right`, `-bottom`, `-left` modifiers for properties like `margin`, `padding` or `border` as well as `-x` and `-y` modifiers for `overflow` or `overscroll-behavior`. Finally, there are the newer [CSS Logical Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties) like `block-start` or `inline-end` that enable us to create layouts that adhere to any writing mode and not just left-to-right / top-to-bottom. In Svala, these modifiers are called _axes_.
+
+Let's look at an example:
 
 ```
 @include generator((
     'border': (
         'property': 'border',
-        'axes': ('top', 'right', 'bottom', 'left'),
+        'axes': top right bottom left,
         'value': '1px solid black'
     )
 ));
 ```
 
-With Svala's default options, this will result in 
+With Svala's default options, this will result in:
 
 ```
 .u-border {
@@ -205,7 +228,58 @@ With Svala's default options, this will result in
 }
 ```
 
-#### Axes
+You can also customize the axes output to your liking. The example above defines a Sass list as the value for the _axes_ key.
+If you switch to a Sass map, you can change the _name_ of the axis (the part that ends up in the selector) and also pass multiple values per axis.
+
+Here's an example with both advanced use cases:
+
+```
+@include generator((
+    'property': 'margin',
+    'value': '1rem',
+    'axes': (
+        't': 'top',
+        'r': 'right',
+        'b': 'bottom',
+        'l': 'left',
+        'h': ('right', 'left'),
+        'v': ('top', 'bottom')
+));
+```
+
+will generate (with default settings):
+
+```
+.u-margin {
+    margin: 1rem;
+}
+
+.u-margin-t {
+    margin-top: 1rem;
+}
+
+.u-margin-r {
+    margin-right: 1rem;
+}
+
+.u-margin-b {
+    margin-bottom: 1rem;
+}
+
+.u-margin-l {
+    margin-left: 1rem;
+}
+
+.u-margin-h {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.u-margin-v {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+```
 
 #### Values
 
