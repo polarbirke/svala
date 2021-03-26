@@ -1,13 +1,17 @@
 # Svala
 
-Svala is a tool to quickly generate CSS utility classes and design tokens.
+Svala is a tool to quickly generate CSS utility classes.
 
-- **No JavaScript**. Svala is written in Sass (specifically, SCSS), not JavaScript. While you still need a pipeline to compile Sass to CSS, configuration and usage are done entirely in Sass.
-- **Highly customisable**. Svala is designed to adapt to your way of working, not the other way around. You can generate verbose classes like `.margin-left` or use shorthand like `.ml`, define prefixes (or "namespaces") like `.yolo-flex` or use hierarchical scales to get output like `.u-grey-100, .u-grey-200, .u-grey-300, …`.
-- **Responsive**. It should go without saying, but yes: Svala handles your breakpoints and generates classes for responsive use, e.g. `.hidden@desktop` or `.lg:hidden` – it's up to you how you configure it. 
-- **Small footprint**. There is no default output – Svala only generates what you configure. Grow your utility classes with the requirements of your project and keep your CSS lean and clean.
+- **No JavaScript**. Svala is written in Sass (SCSS), not JavaScript. While you need a pipeline to compile Sass to CSS, configuration is done in Sass.
+- **Highly customisable**. Svala is designed to adapt to your way of working, not the other way around. You can generate verbose classes like `.margin-left` or use shorthand like `.ml`, define prefixes (or "namespaces") like `.yolo-flex` and `.u-hidden` or use hierarchical scales to get output like `.grey-100, .grey-200, .grey-300, …`.
+- **Responsive**. Svala can take your breakpoints and generate classes for responsive use. You can pick your breakpoint names, choose if you want them in a trailing (e.g. `.hidden@desktop`) or leading position (e.g. `.lg:hidden`) and pick their separator (e.g. `@` or `:`).
+- **Small footprint**. There is no default output – Svala generates what you configure. Grow your utility classes with the requirements of your project and keep your CSS lean and clean.
 
-If you have not heard of utility classes or design tokens before, there are plenty of fantastic articles about them online – use your search engine of choice! You can also watch ["In Defense of Utility-First CSS"](https://www.youtube.com/watch?v=R50q4NES6Iw), an excellent talk by Sarah Dayan at dotCSS 2019, or read ["CSS and Scalability"](http://mrmrs.io/writing/2016/03/24/scalable-css/) by Adam Morse, the creator of [Tachyons](https://tachyons.io/) (this is the article that literally rewired our brain when it was published).    
+If you have not heard of utility classes before, there are plenty of fantastic articles about them online – use your search engine of choice! 
+
+Here are two recommendations: 
+- watch ["In Defense of Utility-First CSS"](https://www.youtube.com/watch?v=R50q4NES6Iw), an excellent talk by Sarah Dayan at dotCSS 2019
+- read ["CSS and Scalability"](http://mrmrs.io/writing/2016/03/24/scalable-css/) by Adam Morse, the creator of [Tachyons](https://tachyons.io/) (this is the article that rewired our brain when it was published)
 
 ## Installation
 
@@ -21,28 +25,42 @@ in your terminal. Use `yarn add svala` if you prefer Yarn.
 
 ## Requirements
 
-Svala is written in Sass, so you need Sass to run it. It doesn't matter if you love Gulp, use node-sass on the command line or if Webpack is your jam. Anything that can compile Sass to CSS will work. Here's [a tutorial for one way to do it](https://webdesign.tutsplus.com/tutorials/watch-and-compile-sass-in-five-quick-steps--cms-28275). 
+Svala is written in Sass, which means you need a way to compile it to CSS. It doesn't matter if you love Gulp, use node-sass on the command line or if Webpack is your jam. Anything that can compile Sass to CSS will work. Here's [a tutorial for one way to do it](https://webdesign.tutsplus.com/tutorials/watch-and-compile-sass-in-five-quick-steps--cms-28275). 
 
 ## Usage
 
 ### Overview
 
-If you're thinking about utility classes, you're probably familiar with CSS ruleset terminology. Svala uses both well-defined terms like _selector_, _property_ and _value_, as well as a few others:
+If you're thinking about utility classes, you're probably familiar with [CSS ruleset terminology](https://developer.mozilla.org/en-US/docs/Web/CSS/Syntax#css_rulesets). Svala uses well-defined terms like _selector_, _property_ and _value_, as well as a few others:
 
 - **base selector** (or _token_): The base name for your selector. Typically, you will use the CSS property you want to control for this, e.g. `margin` or `border`.
-- **value**: Values are the bread and butter of utility classes. Svala allows you to define a list or map of values to iterate over, e.g. a size scale for visual hierarchy or a set of different values like `auto`, `hidden`, `scroll`.
-- **axis**: Svala also introduces a concept called _axes_ (plural, long 'e' 😉). An axis can be used to enhance a base selector with directional input, e.g. `margin-left` or `border-right`.
-- **state**: If you need to factor pseudo-classes into your utilities, Svala has you covered. Use _states_ to generate class variants for `:hover`, `:focus` and others.
+- **axis**: Svala introduces a concept called _axes_ (plural, long 'e' 😉). An axis can be used to enhance a base selector with directional input, e.g. `margin-left` or `border-right`.
+- **value**: Values are the bread and butter of utility classes. Svala allows you to define a list or map of values to iterate over, e.g. a size scale for visual hierarchy or a set of different values like `auto`, `hidden`, `scroll`. Value names are appended to the base selector (or axis, if applicable).
+- **state**: If you need to factor pseudo-classes into your utilities, Svala has you covered. Use _states_ to generate class variants for `:hover`, `:focus`, `:checked` and others.
 - **breakpoint**: All your classes can be scoped to your project's breakpoints and cater to your responsive needs.
 - **prefix** and **postfix**: You can add extra bits to the beginning and/or end of your selectors by using _prefixes_ and _postfixes_. Use this to namespace your utility classes with `.u-`, for example.
 
-Let's look at actual selectors:
+Let's look at a practical example:
 
 ```
 .margin-left-300@tablet { … }
 ```
 
-"margin" is the _base selector_, which is enhanced with "left" as an _axis_ and "300" as the _value_ from a size scale. It should only apply to "tablet" or greater (assuming a mobile-first approach with _breakpoints_). 
+"margin" is the _base selector_, which is enhanced with "left" as an _axis_ and "300" as the _value_ from a size scale. It should apply to the _breakpoint_ named "tablet".
+
+The configuration for this single class could look like this:
+
+```
+$example1-config: (
+    'margin': (
+        'property': 'margin',
+        'axes': left,
+        'values': (
+            '300': '0.75rem' 
+        )
+    )
+);
+```
 
 Here is a second example:
 
@@ -50,7 +68,20 @@ Here is a second example:
 .u-overflow-x-hidden { … }
 ```
 
-This selector uses a _prefix_ ".u-", the _base selector_ "overflow" and was enhanced with the _axis_ "x" as well as "hidden" from a set of _values_.
+This selector uses a _prefix_ ".u-", the _base selector_ "overflow" and was extended with the _axis_ "x" and the _value_ "hidden".
+
+```
+// Please refer to the section about "Output settings" to
+// learn how to configure prefixes!
+
+$example2-config: (
+    'overflow': (
+        'property': 'overflow',
+        'axes': x,
+        'values': hidden
+    )
+);
+```
 
 ### Output settings
 
@@ -176,7 +207,7 @@ With Svala's default options, this will result in
 
 #### Axes
 
-#### Items
+#### Values
 
 #### States
 
