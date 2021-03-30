@@ -27,5 +27,10 @@
     $value-modifier,
     $value-modifier-divider: map-get($svala-options, 'value-modifier-divider')
 ) {
+    // allow generation of generic classes like .u-margin while passing a map (scale) as values
+    @if $value-modifier == '' {
+        $value-modifier-divider: '';
+    }
+
     @return #{$selector + $value-modifier-divider + $value-modifier}
 }
