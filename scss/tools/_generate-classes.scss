@@ -233,12 +233,7 @@
     // .u-margin-top-xl or .u-overflow-x-hidden
     @if $axes and $values {
         
-        // do one cycle for the generic class…
-        .#{$prefix}#{$selector}#{$postfix} {
-            #{$property}: #{$value}#{$nuclear};
-        }
-
-        // …then do one cycle for the generic class with item modifier only
+        // do one cycle without axes…
         @each $value-modifier, $value in $values {
             $valuated-selector: getValuatedSelector($selector, $value-modifier);
 
