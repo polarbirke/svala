@@ -230,7 +230,7 @@
     }
 
     // token classes with axis modifiers and a scale like
-    // .u-margin-top-xl or .u-font-weight-400
+    // .u-margin-top-xl or .u-overflow-x-hidden
     @if $axes and $values {
         
         // do one cycle for the generic class…
