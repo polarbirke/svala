@@ -11,7 +11,7 @@
     @if $breakpoints and not is-map($breakpoints) {
         $type: type-of($breakpoints);
 
-        @error "'breakpoints' is of type #{$type} but must be a list or a map.";
+        @error "'breakpoints' is of type #{$type} but must be a map.";
     }
 
     @include map-iterator($config, $breakpoint-modifier: '');
