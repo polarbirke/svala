@@ -1,0 +1,304 @@
+@import '../helpers/checks';
+@import '../helpers/selector-transformers';
+@import '../helpers/property-transformers';
+
+@mixin generate-classes(
+    $property,
+    $selector: null,
+    $value: null, // allow singular key to be passed for better developer experience
+    $values: null,
+    $value-modifier-divider: map-get($svala-options, 'value-modifier-divider'),
+    $axes: null,
+    $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider'),
+    $axes-shorthand: false,
+    $states: null,
+    $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
+    $prefix: '',
+    $postfix: '',
+    $important: false,
+) {
+
+    // Define a few private variables
+    // ----------------------------------------------------------------------------------------
+    $nuclear: null;
+
+    // States must be valid pseudo-classes; Svala only recognizes a sensible subset of all available pseudo-classes
+    // Miss one? Create a pull request! :)
+    $valid-states: (
+        'active',
+        'checked',
+        'disabled',
+        'empty',
+        'first',
+        'first-child',
+        'first-of-type',
+        'focus',
+        'focus-visible',
+        'focus-within',
+        'hover',
+        'invalid',
+        'last-child',
+        'last-of-type',
+        'link',
+        'only-child',
+        'only-of-type',
+        'optional',
+        'required',
+        'target',
+        'target-within',
+        'valid',
+        'visited',
+    );
+
+    // Set up a few guards with errors and warnings
+    // ----------------------------------------------------------------------------------------
+    @if not $property {
+        @error "Please provide the required parameter 'property'."
+    }
+
+    @if not $value and not $values {
+        @error "Please provide the required parameter 'values'."
+    }
+
+    @if $values and not is-string($values) and not is-list($values) and not is-map($values) {
+        $type: type-of($values);
+
+        @error "'values' is of type #{$type} but must be a string, a list or a map.";
+    }
+
+    // Warning: 'values' always wins
+    @if $value and $values {
+        @warn "Heads up: 'value' (singular) has no effect if you pass 'values' (plural)!";
+    }
+
+    // Map wrong user input to correct internal variable if necessary (1/2): singular to plural
+    @if $value and not $values {
+        @if is-list($value) or is-map($value) {
+            $values: $value;
+        }
+    }
+
+    // Map wrong user input to correct internal variable if necessary (2/2): plural to singular
+    @if $values and is-string($values) {
+        $value: $values;
+    }
+
+    @if $axes and not is-list($axes) and not is-map($axes) {
+        $type: type-of($axes);
+
+        @error "'axes' is of type #{$type} but must be a list or a map.";
+    }
+
+    @if $states and not is-list($states) and not is-map($states) {
+        $type: type-of($states);
+
+        @error "'states' is of type #{$type} but must be a list or a map.";
+    }
+
+    @if $states {
+        @each $state in $states {
+            @if not index($valid-states, $state) {
+                @error "Unknown or unsupported pseudo-class ('state') in config: #{$state}. Please read the docs at https://github.com/polarbirke/svala#states for more information.";
+            }
+        }
+    }
+
+    // [1] allow no selector to be passed if selector and value
+    // are identical like .u-flex { display: flex; }
+    @if not $selector and $value { $selector: $value }
+
+    // [2] allow to pass in a keyword that will set value-modifiers as base selectors
+    @if $selector == map-get($svala-options, 'value-selector-keyword') { $selector: null };
+
+    // in case of [1    ] or [2] no value-modifier-divider is needed
+    @if not $selector and $values {
+        $selector: '';
+        $value-modifier-divider: '';
+    }
+
+    // set important if requested
+    @if $important { $nuclear: ' !important' }
+
+    // reset axis-modifier-divider to empty string if axes-shorthand is requested
+    // for a certain utility class (but not globally)
+    @if $axes-shorthand {
+        $axis-modifier-divider: '';
+    }
+
+    // one-off token classes like .u-block or .u-relative
+    @if not $values and not $axes {
+        .#{$prefix}#{$selector}#{$postfix} {
+            #{$property}: #{$value}#{$nuclear};
+        }
+
+        @if $states {
+            @each $state-modifier in $states {
+                $stateful-selector: getStatefulSelector($selector, $state-modifier);
+
+                .#{$prefix}#{$stateful-selector}#{$postfix} {
+                    &:#{$state-modifier} {
+                        #{$property}: #{$value}#{$nuclear};
+                    }
+                }
+            }
+        }
+    }
+
+    // one-off token classes, but with axis modifiers like x, y
+    // or top, right, left, bottom or start, end, center
+    @if $axes and not $values {
+
+        // do one cycle for the generic class…
+        .#{$prefix}#{$selector}#{$postfix} {
+            #{$property}: #{$value}#{$nuclear};
+        }
+
+        @if $states {
+            @each $state-modifier in $states {
+                $stateful-selector: getStatefulSelector($selector, $state-modifier);
+
+                .#{$prefix}#{$stateful-selector}#{$postfix} {
+                    &:#{$state-modifier} {
+                        #{$property}: #{$value}#{$nuclear};
+                    }
+                }
+            }
+        }
+
+        // …then one for each axis
+        @each $axis-modifier, $axis in $axes {
+            @if not $axis { $axis: $axis-modifier }
+
+            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
+
+            .#{$prefix}#{$axified-selector}#{$postfix} {
+                @if is-list($axis) {
+                    @each $axis in $axis {
+                        $axified-property: getAxifiedProperty($property, $axis);
+                        #{$axified-property}: #{$value}#{$nuclear};
+                    }
+                } @else {
+                    $axified-property: getAxifiedProperty($property, $axis);
+                    #{$axified-property}: #{$value}#{$nuclear};
+                }
+            }
+
+            @if $states {
+                @each $state-modifier in $states {
+                    $stateful-selector: getStatefulSelector($axified-selector, $state-modifier);
+
+                    .#{$prefix}#{$stateful-selector}#{$postfix} {
+                        &:#{$state-modifier} {
+                            @if is-list($axis) {
+                                @each $axis in $axis {
+                                    $axified-property: getAxifiedProperty($property, $axis);
+                                    #{$axified-property}: #{$value}#{$nuclear};
+                                }
+                            } @else {
+                                $axified-property: getAxifiedProperty($property, $axis);
+                                #{$axified-property}: #{$value}#{$nuclear};
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @if $values and not $axes {
+        @each $value-modifier, $value in $values {
+            $valuated-selector: getValuatedSelector($selector, $value-modifier, $value-modifier-divider);
+
+            @if not $value { $value: $value-modifier }
+
+            .#{$prefix}#{$valuated-selector}#{$postfix} {
+                #{$property}: #{$value}#{$nuclear};
+            }
+
+            @if $states {
+                @each $state-modifier in $states {
+                    $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
+
+                    .#{$prefix}#{$stateful-selector}#{$postfix} {
+                        &:#{$state-modifier} {
+                            #{$property}: #{$value}#{$nuclear};
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // token classes with axis modifiers and a scale like
+    // .u-margin-top-xl or .u-overflow-x-hidden
+    @if $axes and $values {
+        
+        // do one cycle without axes…
+        @each $value-modifier, $value in $values {
+            $valuated-selector: getValuatedSelector($selector, $value-modifier);
+
+            @if not $value { $value: $value-modifier }
+
+            .#{$prefix}#{$valuated-selector}#{$postfix} {
+                #{$property}: #{$value}#{$nuclear};
+            }
+
+            @if $states {
+                @each $state-modifier in $states {
+                    $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
+
+                    .#{$prefix}#{$stateful-selector}#{$postfix} {
+                        &:#{$state-modifier} {
+                            #{$property}: #{$value}#{$nuclear};
+                        }
+                    }
+                }
+            }
+        }
+
+        // …then one for each axis
+        @each $axis-modifier, $axis in $axes {
+            @if not $axis { $axis: $axis-modifier }
+
+            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
+
+            @each $value-modifier, $value in $values {
+                $valuated-selector: getValuatedSelector($axified-selector, $value-modifier);
+
+                @if not $value { $value: $value-modifier }
+
+                .#{$prefix}#{$valuated-selector}#{$postfix} {
+                    @if is-list($axis) {
+                        @each $axis in $axis {
+                            $axified-property: getAxifiedProperty($property, $axis);
+                            #{$axified-property}: #{$value}#{$nuclear};
+                        }
+                    } @else {
+                        $axified-property: getAxifiedProperty($property, $axis);
+                        #{$axified-property}: #{$value}#{$nuclear};
+                    }
+                }
+
+                @if $states {
+                    @each $state-modifier in $states {
+                        $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
+
+                        .#{$prefix}#{$stateful-selector}#{$postfix} {
+                            &:#{$state-modifier} {
+                                @if is-list($axis) {
+                                    @each $axis in $axis {
+                                        $axified-property: getAxifiedProperty($property, $axis);
+                                        #{$axified-property}: #{$value}#{$nuclear};
+                                    }
+                                } @else {
+                                    $axified-property: getAxifiedProperty($property, $axis);
+                                    #{$axified-property}: #{$value}#{$nuclear};
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

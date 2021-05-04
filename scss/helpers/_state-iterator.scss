@@ -1,0 +1,11 @@
+@mixin handleStates($selector, $states) {
+    @each $state-modifier in $states {
+        $stateful-selector: getStatefulSelector($selector, $state-modifier);
+
+        .#{$prefix}#{$stateful-selector}#{$postfix} {
+            &:#{$state-modifier} {
+                #{$property}: #{$value}#{$nuclear};
+            }
+        }
+    }
+}

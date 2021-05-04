@@ -1,0 +1,37 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$my-options: (
+    'value-modifier-divider': '--'
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test BEM-like double-hyphen notation for modifiers') {
+    @include it('Generate three utility classes with -- before modifiers') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'text': (
+                        'property': 'text-align',
+                        'values': ('right', 'left', 'center')
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-text--right {
+                    text-align: right;
+                }
+
+                .u-text--left {
+                    text-align: left;
+                }
+
+                .u-text--center {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

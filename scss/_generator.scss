@@ -1,0 +1,26 @@
+@import 'config/default-options';
+@import 'config/default-helpers';
+@import 'tools/map-iterator';
+
+@mixin generator($config) {
+    $breakpoints: map-get($svala-options, 'breakpoints');
+    $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
+
+    // Set up a few guards with errors and warnings
+    // ----------------------------------------------------------------------------------------
+    @if $breakpoints and not is-map($breakpoints) {
+        $type: type-of($breakpoints);
+
+        @error "'breakpoints' is of type #{$type} but must be a map.";
+    }
+
+    @include map-iterator($config, $breakpoint-modifier: '');
+
+    @if $breakpoints {
+        @each $breakpoint-modifier, $breakpoint in $breakpoints {
+            @media (#{$breakpoint}) {
+                @include map-iterator($config, $breakpoint-modifier, $is-responsive-iteration: true);
+            }
+        }
+    }
+}

@@ -1,0 +1,153 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    'tablet': 'min-width: 768px',
+    'desktop': 'min-width: 1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map,
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+$spacings-map: (
+    '300': '0.75rem',
+    '400': '1rem'
+);
+
+@include describe('Test generator with a config map containing a property as well as axis and items maps') {
+    @include it('Generate six utility classes (one for each item and each axis)') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'margin': (
+                        'property': 'margin',
+                        'axes': ('top', 'bottom'),
+                        'values': $spacings-map
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-margin-300 {
+                    margin: 0.75rem;
+                }
+
+                .u-margin-400 {
+                    margin: 1rem;
+                }
+
+                .u-margin-top-300 {
+                    margin-top: 0.75rem;
+                }
+
+                .u-margin-top-400 {
+                    margin-top: 1rem;
+                }
+
+                .u-margin-bottom-300 {
+                    margin-bottom: 0.75rem;
+                }
+
+                .u-margin-bottom-400 {
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+
+    @include it('Generate 18 utility classes – one for each item (3) and each axis (2) as well as their responsive variants') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'padding': (
+                        'property': 'padding',
+                        'axes': ('top', 'bottom'),
+                        'values': $spacings-map,
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-padding-300 {
+                    padding: 0.75rem;
+                }
+
+                .u-padding-400 {
+                    padding: 1rem;
+                }
+
+                .u-padding-top-300 {
+                    padding-top: 0.75rem;
+                }
+
+                .u-padding-top-400 {
+                    padding-top: 1rem;
+                }
+
+                .u-padding-bottom-300 {
+                    padding-bottom: 0.75rem;
+                }
+
+                .u-padding-bottom-400 {
+                    padding-bottom: 1rem;
+                }
+
+                @media (min-width: 768px) {
+                    .u-padding-300\@tablet {
+                        padding: 0.75rem;
+                    }
+
+                    .u-padding-400\@tablet {
+                        padding: 1rem;
+                    }
+
+                    .u-padding-top-300\@tablet {
+                        padding-top: 0.75rem;
+                    }
+
+                    .u-padding-top-400\@tablet {
+                        padding-top: 1rem;
+                    }
+
+                    .u-padding-bottom-300\@tablet {
+                        padding-bottom: 0.75rem;
+                    }
+
+                    .u-padding-bottom-400\@tablet {
+                        padding-bottom: 1rem;
+                    }
+                }
+
+                @media (min-width: 1280px) {
+                    .u-padding-300\@desktop {
+                        padding: 0.75rem;
+                    }
+
+                    .u-padding-400\@desktop {
+                        padding: 1rem;
+                    }
+
+                    .u-padding-top-300\@desktop {
+                        padding-top: 0.75rem;
+                    }
+
+                    .u-padding-top-400\@desktop {
+                        padding-top: 1rem;
+                    }
+
+                    .u-padding-bottom-300\@desktop {
+                        padding-bottom: 0.75rem;
+                    }
+
+                    .u-padding-bottom-400\@desktop {
+                        padding-bottom: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}

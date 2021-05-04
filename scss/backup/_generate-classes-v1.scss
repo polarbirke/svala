@@ -1,0 +1,164 @@
+@import '../config/default-options';
+@import '../helpers/functions';
+
+@mixin generate-classes(
+    $property,
+    $selector: map-get($svala-options, 'selector'),
+    $value: map-get($svala-options, 'value'),
+    $items: map-get($svala-options, 'items'),
+    $axis: map-get($svala-options, 'axis'),
+    $states: map-get($svala-options, 'states'),
+    $breakpoints: map-get($svala-options, 'breakpoints'),
+    $prefix: map-get($svala-options, 'prefix'),
+    $postfix: map-get($svala-options, 'postfix'),
+    $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider'),
+    $item-modifier-divider: map-get($svala-options, 'item-modifier-divider'),
+    $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
+    $important: null,
+    $nuclear: null,
+) {
+
+    // allow no selector to be passed if selector and value
+    // are identical like .u-flex { display: flex; }
+    @if not $selector and $value { $selector: $value }
+
+    @if not $selector { $item-modifier-divider: '' }
+
+    @if $important { $nuclear: ' !important' }
+
+    // one-off token classes like .u-block or .u-relative
+    @if not $items and not $axis {
+        .#{$prefix}#{$selector}#{$postfix} {
+            #{$property}: #{$value}#{$nuclear};
+        }
+
+        @if $states {
+            @each $state-modifier in $states {
+                .#{$prefix}#{$selector}#{$state-modifier-divider}#{$state-modifier}#{$postfix} {
+                    #{$property}: #{$value}#{$nuclear};
+                }
+            }
+        }
+    }
+
+    // one-off token classes, but with axis modifiers like x, y
+    // or top, right, left, bottom or start, end, center
+    @if $axis and not $items {
+
+        // do one cycle for the generic class…
+        .#{$prefix}#{$selector}#{$postfix} {
+            #{$property}: #{$value}#{$nuclear};
+        }
+
+        @if $states {
+            @each $state-modifier in $states {
+                .#{$prefix}#{$selector}#{$state-modifier-divider}#{$state-modifier}#{$postfix} {
+                    #{$property}: #{$value}#{$nuclear};
+                }
+            }
+        }
+
+        // …then one for each axis
+        @each $axis-modifier, $axis in $axis {
+            @if not $axis {
+                $axis: $axis-modifier
+            }
+
+            .#{$prefix}#{$selector}#{$axis-modifier-divider}#{$axis-modifier}#{$postfix} {
+                @if is-list($axis) {
+                    @each $axis in $axis {
+                        #{$property}-#{$axis}: #{$value}#{$nuclear};
+                    }
+                } @else {
+                    #{$property}-#{$axis}: #{$value}#{$nuclear};
+                }
+            }
+
+            @if $states {
+                @each $state-modifier in $states {
+                    .#{$prefix}#{$selector}#{$axis-modifier-divider}#{$axis-modifier}#{$state-modifier-divider}#{$state-modifier}#{$postfix} {
+                        @if is-list($axis) {
+                            @each $axis in $axis {
+                                #{$property}-#{$axis}: #{$value}#{$nuclear};
+                            }
+                        } @else {
+                            #{$property}-#{$axis}: #{$value}#{$nuclear};
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @if $items and not $axis {
+        @each $item-modifier, $value in $items {
+            @if not $value { $value: $item-modifier }
+
+            .#{$prefix}#{$selector}#{$item-modifier-divider}#{$item-modifier}#{$postfix} {
+                #{$property}: #{$value}#{$nuclear};
+            }
+
+            @if $states {
+                @each $state-modifier in $states {
+                    .#{$prefix}#{$selector}#{$item-modifier-divider}#{$item-modifier}#{$state-modifier-divider}#{$state-modifier}#{$postfix} {
+                        #{$property}: #{$value}#{$nuclear};
+                    }
+                }
+            }
+        }
+    }
+
+    // token classes with axis modifiers and a scale like
+    // .u-margin-top-xl or .u-font-weight-400
+    @if $axis and $items {
+        // do one cycle for the generic class with item modifier only
+        @each $item-modifier, $value in $items {
+            @if not $value { $value: $item-modifier }
+
+            .#{$prefix}#{$selector}#{$item-modifier-divider}#{$item-modifier}#{$postfix} {
+                #{$property}: #{$value}#{$nuclear};
+            }
+
+            @if $states {
+                @each $state-modifier in $states {
+                    .#{$prefix}#{$selector}#{$item-modifier-divider}#{$item-modifier}#{$state-modifier-divider}#{$state-modifier}#{$postfix} {
+                        #{$property}: #{$value}#{$nuclear};
+                    }
+                }
+            }
+        }
+
+        // …then one for each axis
+        @each $axis-modifier, $axis in $axis {
+            @if not $axis { $axis: $axis-modifier }
+
+            @each $item-modifier, $value in $items {
+                @if not $value { $value: $item-modifier }
+
+                .#{$prefix}#{$selector}#{$axis-modifier-divider}#{$axis-modifier}#{$item-modifier-divider}#{$item-modifier}#{$postfix} {
+                    @if is-list($axis) {
+                        @each $axis in $axis {
+                            #{$property}-#{$axis}: #{$value}#{$nuclear};
+                        }
+                    } @else {
+                        #{$property}-#{$axis}: #{$value}#{$nuclear};
+                    }
+                }
+
+                @if $states {
+                    @each $state-modifier in $states {
+                        .#{$prefix}#{$selector}#{$axis-modifier-divider}#{$axis-modifier}#{$item-modifier-divider}#{$item-modifier}#{$state-modifier-divider}#{$state-modifier}#{$postfix} {
+                            @if is-list($axis) {
+                                @each $axis in $axis {
+                                    #{$property}-#{$axis}: #{$value}#{$nuclear};
+                                }
+                            } @else {
+                                #{$property}-#{$axis}: #{$value}#{$nuclear};
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

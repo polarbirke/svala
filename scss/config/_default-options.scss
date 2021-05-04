@@ -1,0 +1,16 @@
+$svala-default-options: (
+    'breakpoints': null,
+    'prefix': 'u',
+    'prefix-divider': '-',
+    'postfix': '',
+    'postfix-divider': '-',
+    'axis-modifier-divider': '-',
+    'value-modifier-divider': '-',
+    'state-modifier-divider': '\\@',
+    'breakpoint-modifier-divider': '\\@',
+    'stateful-mode': 'trailing',
+    'responsive-mode': 'trailing',
+    'value-selector-keyword': 'USE_VALUES'
+) !default;
+
+$svala-options: $svala-default-options !default;

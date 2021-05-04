@@ -1,0 +1,36 @@
+@import '../config/default-options';
+
+@function getStatefulSelector(
+    $selector,
+    $state-modifier,
+    $state-modifier-divider: map-get($svala-options, 'state-modifier-divider')
+) {
+    @if (map-get($svala-options, 'stateful-mode') == 'trailing') {
+        $selector: #{$selector + $state-modifier-divider + $state-modifier};
+    } @else if (map-get($svala-options, 'stateful-mode') == 'leading') {
+        $selector: #{$state-modifier + $state-modifier-divider + $selector};
+    }
+
+    @return $selector;
+}
+
+@function getAxifiedSelector(
+    $selector,
+    $axis-modifier,
+    $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider')
+) {
+    @return #{$selector + $axis-modifier-divider + $axis-modifier}
+}
+
+@function getValuatedSelector(
+    $selector,
+    $value-modifier,
+    $value-modifier-divider: map-get($svala-options, 'value-modifier-divider')
+) {
+    // allow generation of generic classes like .u-margin while passing a map (scale) as values
+    @if $value-modifier == '' {
+        $value-modifier-divider: '';
+    }
+
+    @return #{$selector + $value-modifier-divider + $value-modifier}
+}

@@ -1,0 +1,413 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    'tablet': 'min-width: 768px',
+    'desktop': 'min-width: 1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test difficult outliers, e.g.: border-radius, border-style, etc.') {
+    @include it('Generate valid border-color classes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'border': (
+                        'property': 'border-color',
+                        'values': black white,
+                        'axes': $standard-axes
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-border-black {
+                    border-color: black;
+                }
+
+                .u-border-white {
+                    border-color: white;
+                }
+
+                .u-border-top-black {
+                    border-top-color: black;
+                }
+
+                .u-border-top-white {
+                    border-top-color: white;
+                }
+
+                .u-border-right-black {
+                    border-right-color: black;
+                }
+
+                .u-border-right-white {
+                    border-right-color: white;
+                }
+
+                .u-border-bottom-black {
+                    border-bottom-color: black;
+                }
+
+                .u-border-bottom-white {
+                    border-bottom-color: white;
+                }
+
+                .u-border-left-black {
+                    border-left-color: black;
+                }
+
+                .u-border-left-white {
+                    border-left-color: white;
+                }
+
+                .u-border-horizontal-black {
+                    border-right-color: black;
+                    border-left-color: black;
+                }
+
+                .u-border-horizontal-white {
+                    border-right-color: white;
+                    border-left-color: white;
+                }
+
+                .u-border-vertical-black {
+                    border-top-color: black;
+                    border-bottom-color: black;
+                }
+
+                .u-border-vertical-white {
+                    border-top-color: white;
+                    border-bottom-color: white;
+                }
+            }
+        }
+    }
+
+    @include it('Generate valid border-radius classes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'rounded': (
+                        'property': 'border-radius',
+                        'value': '50%',
+                        'axes': $border-radius-axes
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-rounded {
+                    border-radius: 50%;
+                }
+
+                .u-rounded-top-right {
+                    border-top-right-radius: 50%;
+                }
+
+                .u-rounded-top-left {
+                    border-top-left-radius: 50%;
+                }
+
+                .u-rounded-bottom-right {
+                    border-bottom-right-radius: 50%;
+                }
+
+                .u-rounded-bottom-left {
+                    border-bottom-left-radius: 50%;
+                }
+
+                .u-rounded-top {
+                    border-top-right-radius: 50%;
+                    border-top-left-radius: 50%;
+                }
+
+                .u-rounded-bottom {
+                    border-bottom-right-radius: 50%;
+                    border-bottom-left-radius: 50%;
+                }
+            }
+        }
+    }
+
+    @include it('Generate valid border-style classes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'border': (
+                        'property': 'border-style',
+                        'values': $border-styles,
+                        'axes': $standard-axes
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-border-dashed {
+                    border-style: dashed;
+                }
+
+                .u-border-dotted {
+                    border-style: dotted;
+                }
+
+                .u-border-double {
+                    border-style: double;
+                }
+
+                .u-border-none {
+                    border-style: none;
+                }
+
+                .u-border-solid {
+                    border-style: solid;
+                }
+
+                .u-border-top-dashed {
+                    border-top-style: dashed;
+                }
+
+                .u-border-top-dotted {
+                    border-top-style: dotted;
+                }
+
+                .u-border-top-double {
+                    border-top-style: double;
+                }
+
+                .u-border-top-none {
+                    border-top-style: none;
+                }
+
+                .u-border-top-solid {
+                    border-top-style: solid;
+                }
+
+                .u-border-right-dashed {
+                    border-right-style: dashed;
+                }
+
+                .u-border-right-dotted {
+                    border-right-style: dotted;
+                }
+
+                .u-border-right-double {
+                    border-right-style: double;
+                }
+
+                .u-border-right-none {
+                    border-right-style: none;
+                }
+
+                .u-border-right-solid {
+                    border-right-style: solid;
+                }
+
+                .u-border-bottom-dashed {
+                    border-bottom-style: dashed;
+                }
+
+                .u-border-bottom-dotted {
+                    border-bottom-style: dotted;
+                }
+
+                .u-border-bottom-double {
+                    border-bottom-style: double;
+                }
+
+                .u-border-bottom-none {
+                    border-bottom-style: none;
+                }
+
+                .u-border-bottom-solid {
+                    border-bottom-style: solid;
+                }
+
+                .u-border-left-dashed {
+                    border-left-style: dashed;
+                }
+
+                .u-border-left-dotted {
+                    border-left-style: dotted;
+                }
+
+                .u-border-left-double {
+                    border-left-style: double;
+                }
+
+                .u-border-left-none {
+                    border-left-style: none;
+                }
+
+                .u-border-left-solid {
+                    border-left-style: solid;
+                }
+                
+                .u-border-horizontal-dashed {
+                    border-right-style: dashed;
+                    border-left-style: dashed;
+                }
+
+                .u-border-horizontal-dotted {
+                    border-right-style: dotted;
+                    border-left-style: dotted;
+                }
+
+                .u-border-horizontal-double {
+                    border-right-style: double;
+                    border-left-style: double;
+                }
+
+                .u-border-horizontal-none {
+                    border-right-style: none;
+                    border-left-style: none;
+                }
+
+                .u-border-horizontal-solid {
+                    border-right-style: solid;
+                    border-left-style: solid;
+                }
+
+                .u-border-vertical-dashed {
+                    border-top-style: dashed;
+                    border-bottom-style: dashed;
+                }
+
+                .u-border-vertical-dotted {
+                    border-top-style: dotted;
+                    border-bottom-style: dotted;
+                }
+
+                .u-border-vertical-double {
+                    border-top-style: double;
+                    border-bottom-style: double;
+                }
+
+                .u-border-vertical-none {
+                    border-top-style: none;
+                    border-bottom-style: none;
+                }
+
+                .u-border-vertical-solid {
+                    border-top-style: solid;
+                    border-bottom-style: solid;
+                }
+            }
+        }
+    }
+
+    @include it('Generate valid border-width classes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                        'border': (
+                            'property': 'border-width',
+                            'values': (
+                                '100': '1px',
+                                '200': '4px',
+                                '300': '8px',
+                            ),
+                            'axes': $standard-axes
+                        )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-border-100 {
+                    border-width: 1px;
+                }
+
+                .u-border-200 {
+                    border-width: 4px;
+                }
+
+                .u-border-300 {
+                    border-width: 8px;
+                }
+
+                .u-border-top-100 {
+                    border-top-width: 1px;
+                }
+
+                .u-border-top-200 {
+                    border-top-width: 4px;
+                }
+
+                .u-border-top-300 {
+                    border-top-width: 8px;
+                }
+
+                .u-border-right-100 {
+                    border-right-width: 1px;
+                }
+
+                .u-border-right-200 {
+                    border-right-width: 4px;
+                }
+
+                .u-border-right-300 {
+                    border-right-width: 8px;
+                }
+
+                .u-border-bottom-100 {
+                    border-bottom-width: 1px;
+                }
+
+                .u-border-bottom-200 {
+                    border-bottom-width: 4px;
+                }
+
+                .u-border-bottom-300 {
+                    border-bottom-width: 8px;
+                }
+
+                .u-border-left-100 {
+                    border-left-width: 1px;
+                }
+
+                .u-border-left-200 {
+                    border-left-width: 4px;
+                }
+
+                .u-border-left-300 {
+                    border-left-width: 8px;
+                }
+
+                .u-border-horizontal-100 {
+                    border-right-width: 1px;
+                    border-left-width: 1px;
+                }
+
+                .u-border-horizontal-200 {
+                    border-right-width: 4px;
+                    border-left-width: 4px;
+                }
+
+                .u-border-horizontal-300 {
+                    border-right-width: 8px;
+                    border-left-width: 8px;
+                }
+
+                .u-border-vertical-100 {
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                }
+
+                .u-border-vertical-200 {
+                    border-top-width: 4px;
+                    border-bottom-width: 4px;
+                }
+
+                .u-border-vertical-300 {
+                    border-top-width: 8px;
+                    border-bottom-width: 8px;
+                }
+            }
+        }
+    }
+}

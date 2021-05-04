@@ -1,0 +1,57 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+@include describe('Test outputting multiple declarations per axified class, e.g. "margin-horizontal" with margin-right and margin-left') {
+    @include it('Generate margin utility classes across six axes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'margin': (
+                        'property': 'margin',
+                        'value': '1rem',
+                        'axes': (
+                            'top': 'top',
+                            'right': 'right',
+                            'bottom': 'bottom',
+                            'left': 'left',
+                            'horizontal': ('right', 'left'),
+                            'vertical': ('top', 'bottom')
+                        )
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-margin {
+                    margin: 1rem;
+                }
+
+                .u-margin-top {
+                    margin-top: 1rem;
+                }
+
+                .u-margin-right {
+                    margin-right: 1rem;
+                }
+
+                .u-margin-bottom {
+                    margin-bottom: 1rem;
+                }
+
+                .u-margin-left {
+                    margin-left: 1rem;
+                }
+
+                .u-margin-horizontal {
+                    margin-right: 1rem;
+                    margin-left: 1rem;
+                }
+
+                .u-margin-vertical {
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+}

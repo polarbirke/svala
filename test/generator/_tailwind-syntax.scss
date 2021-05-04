@@ -1,0 +1,198 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    'md': 'min-width: 768px',
+    'lg': 'min-width: 1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map,
+    'breakpoint-modifier-divider': '\\:',
+    'state-modifier-divider': '\\:',
+    'axis-modifier-divider': '',
+    'responsive-mode': 'leading',
+    'stateful-mode': 'leading',
+    'prefix': ''
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+$spacings-map: (
+    '300': '0.75rem',
+    '400': '1rem'
+);
+
+@include describe('Test svala-options configured to output tailwind-style syntax (including breakpoints and states)') {
+    @include it('Generate margin classes on a spacing scale á la "mr-300" and "mx-400"') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'm': (
+                        'property': 'margin',
+                        'axes': (
+                            't': 'top',
+                            'r': 'right',
+                            'b': 'bottom',
+                            'l': 'left',
+                            'x': ('right', 'left'),
+                            'y': ('top', 'bottom')
+                        ),
+                        'values': $spacings-map
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .m-300 {
+                    margin: 0.75rem;
+                }
+
+                .m-400 {
+                    margin: 1rem;
+                }
+
+                .mt-300 {
+                    margin-top: 0.75rem;
+                }
+
+                .mt-400 {
+                    margin-top: 1rem;
+                }
+
+                .mr-300 {
+                    margin-right: 0.75rem;
+                }
+
+                .mr-400 {
+                    margin-right: 1rem;
+                }
+
+                .mb-300 {
+                    margin-bottom: 0.75rem;
+                }
+
+                .mb-400 {
+                    margin-bottom: 1rem;
+                }
+
+                .ml-300 {
+                    margin-left: 0.75rem;
+                }
+
+                .ml-400 {
+                    margin-left: 1rem;
+                }
+
+                .mx-300 {
+                    margin-right: 0.75rem;
+                    margin-left: 0.75rem;
+                }
+
+                .mx-400 {
+                    margin-right: 1rem;
+                    margin-left: 1rem;
+                }
+
+                .my-300 {
+                    margin-top: 0.75rem;
+                    margin-bottom: 0.75rem;
+                }
+
+                .my-400 {
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+
+    @include it('Generate a single utility class and its responsive variants with breakpoint prefixes á la "md:border"') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'border': (
+                        'property': 'border',
+                        'value': '1px solid currentColor',
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .border {
+                    border: 1px solid currentColor;
+                }
+
+                @media (min-width: 768px) {
+                    .md\:border {
+                        border: 1px solid currentColor;
+                    }
+                }
+
+                @media (min-width: 1280px) {
+                    .lg\:border {
+                        border: 1px solid currentColor;
+                    }
+                }
+            }
+        }
+    }
+
+    @include it('Generate a single utility class and both its responsive and stateful variants prefixes á la "md:hover:border-rebecca"') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'border-rebecca': (
+                        'property': 'border',
+                        'value': '1px solid rebeccapurple',
+                        'responsive': true,
+                        'states': ('hover', 'focus')
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .border-rebecca {
+                    border: 1px solid rebeccapurple;
+                }
+
+                .hover\:border-rebecca:hover {
+                    border: 1px solid rebeccapurple;
+                }
+
+                .focus\:border-rebecca:focus {
+                    border: 1px solid rebeccapurple;
+                }
+
+                @media (min-width: 768px) {
+                    .md\:border-rebecca {
+                        border: 1px solid rebeccapurple;
+                    }
+
+                    .md\:hover\:border-rebecca:hover {
+                        border: 1px solid rebeccapurple;
+                    }
+
+                    .md\:focus\:border-rebecca:focus {
+                        border: 1px solid rebeccapurple;
+                    }
+                }
+
+                @media (min-width: 1280px) {
+                    .lg\:border-rebecca {
+                        border: 1px solid rebeccapurple;
+                    }
+
+                    .lg\:hover\:border-rebecca:hover {
+                        border: 1px solid rebeccapurple;
+                    }
+
+                    .lg\:focus\:border-rebecca:focus {
+                        border: 1px solid rebeccapurple;
+                    }
+                }
+            }
+        }
+    }
+}

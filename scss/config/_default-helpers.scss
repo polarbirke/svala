@@ -1,0 +1,19 @@
+$standard-axes: (
+    'top': 'top',
+    'right': 'right',
+    'bottom': 'bottom',
+    'left': 'left',
+    'horizontal': right left,
+    'vertical': top bottom
+);
+
+$border-radius-axes: (
+    'top-right': 'top-right',
+    'top-left': 'top-left',
+    'bottom-right': 'bottom-right',
+    'bottom-left': 'bottom-left',
+    'top': top-right top-left,
+    'bottom': bottom-right bottom-left
+);
+
+$border-styles: dashed dotted double none solid;

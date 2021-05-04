@@ -1,0 +1,25 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/helpers/checks';
+
+$map: (
+    'key-1': 'value-1',
+    'key-2': 'value-2'
+);
+
+$list: ('foo', 'bar');
+
+$string: 'yolo';
+
+@include describe('is-map() function') {
+    @include it('Returns true for a map') {
+        @include assert-true(is-map($map))
+    }
+
+    @include it('Returns false for a list') {
+        @include assert-false(is-map($list))
+    }
+
+    @include it('Returns false for a string') {
+        @include assert-false(is-map($string))
+    }
+}
