@@ -1,0 +1,26 @@
+@function addConditionToValues($breakpoints) {
+    $condition: map-get($svala-options, 'condition');
+    $new-breakpoints: ();
+
+    @each $breakpoint, $value in $breakpoints {
+        $map: ($breakpoint: "min-width:" + $value);
+        $new-breakpoints: map-merge($new-breakpoints, $map);
+    }
+
+    @return $new-breakpoints;
+}
+
+@function excludeBreakpoints($breakpoints) {
+    $excluded-breakpoints: map-get($svala-options, 'exclude-breakpoints');
+    $new-breakpoints: ();
+
+    @each $breakpoint, $value in $breakpoints {
+        // merge $breakpoint nur, wenn er nicht in $svala-exclude-breakpoints enthalten ist
+        @if not (index($excluded-breakpoints, $breakpoint)) {
+            $map: ($breakpoint: $value);
+            $new-breakpoints: map-merge($new-breakpoints, $map);
+        }
+    }
+
+    @return $new-breakpoints;
+}

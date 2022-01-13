@@ -1,9 +1,11 @@
 @import 'config/default-options';
 @import 'config/default-helpers';
 @import 'tools/map-iterator';
+@import 'helpers/breakpoints-map-transformer';
 
 @mixin generator($config) {
-    $breakpoints: map-get($svala-options, 'breakpoints');
+    $breakpoints: excludeBreakpoints(map-get($svala-options, 'breakpoints'));
+    $breakpoints: addConditionToValues($breakpoints);
     $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
 
     // Set up a few guards with errors and warnings

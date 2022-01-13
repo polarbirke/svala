@@ -1,5 +1,7 @@
 $svala-default-options: (
     'breakpoints': null,
+    'exclude-breakpoints': (),
+    'condition': 'min-width',
     'prefix': 'u',
     'prefix-divider': '-',
     'postfix': '',
