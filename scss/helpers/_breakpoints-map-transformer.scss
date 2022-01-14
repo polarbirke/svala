@@ -15,7 +15,6 @@
     $new-breakpoints: ();
 
     @each $breakpoint, $value in $breakpoints {
-        // merge $breakpoint nur, wenn er nicht in $svala-exclude-breakpoints enthalten ist
         @if not (index($excluded-breakpoints, $breakpoint)) {
             $map: ($breakpoint: $value);
             $new-breakpoints: map-merge($new-breakpoints, $map);
@@ -23,4 +22,8 @@
     }
 
     @return $new-breakpoints;
+}
+
+@function transformBreakpoints($breakpoints) {
+    @return addConditionToValues(excludeBreakpoints($breakpoints));
 }

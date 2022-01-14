@@ -4,8 +4,7 @@
 @import 'helpers/breakpoints-map-transformer';
 
 @mixin generator($config) {
-    $breakpoints: excludeBreakpoints(map-get($svala-options, 'breakpoints'));
-    $breakpoints: addConditionToValues($breakpoints);
+    $breakpoints: transformBreakpoints(map-get($svala-options, 'breakpoints'));
     $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
 
     // Set up a few guards with errors and warnings
