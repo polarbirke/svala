@@ -1,0 +1,57 @@
+$valid-media-features: (
+    'any-hover',
+    'any-pointer',
+    'aspect-ratio',
+    'color',
+    'color-gamut',
+    'color-index',
+    'display-mode',
+    'forced-colors',
+    'grid',
+    'height',
+    'hover',
+    'inverted-colors',
+    'max-height',
+    'max-width',
+    'min-height',
+    'min-width',
+    'monochrome',
+    'orientation',
+    'overflow-block',
+    'overflow-inline',
+    'pointer',
+    'prefers-color-scheme',
+    'prefers-contrast',
+    'prefers-reduced-motion',
+    'resolution',
+    'scripting',
+    'update',
+    'width',
+);
+
+@function getRefinedBreakpoints($breakpoints-map) {
+    $refined-breakpoints-map: ();
+
+    @each $media-feature in $valid-media-features {
+        @each $breakpoint-name, $breakpoint-value in $breakpoints-map {
+
+            @debug $breakpoint-value;
+
+            @if not str-index($breakpoint-value, $media-feature) {
+                $breakpoint-value: #{'min-width: ' + $breakpoint-value};
+            }
+
+            $refined-breakpoints-map: map-merge($refined-breakpoints-map, ($breakpoint-name: $breakpoint-value));
+        }
+    }
+
+    @each $breakpoint-name, $breakpoint-value in $refined-breakpoints-map {
+        @if not (str-index($breakpoint-value, '(')) and not (str-index($breakpoint-value, ')')) {
+            $breakpoint-value: #{'(' + $breakpoint-value + ')'};
+        }
+
+        $refined-breakpoints-map: map-merge($refined-breakpoints-map, ($breakpoint-name: $breakpoint-value));
+    }
+
+    @return $refined-breakpoints-map;
+}

@@ -1,0 +1,58 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    '16\:9': 'aspect-ratio: 16/9',
+    //'motion-allowed': 'prefers-reduced-motion: no-preference',
+    'md-max': 'max-width: 768px',
+    'md-to-lg': '(min-width: 768px) and (max-width: 1280px)',
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map,
+    'breakpoint-modifier-divider': '\\:',
+    'responsive-mode': 'leading',
+    'prefix': ''
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test breakpoints with explicit media-features') {
+    @include it('Generate utility classes with explicit media features like "max-width", "aspect-ratio", "prefers-reduced-motion"') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'text': (
+                        'property': 'text-transform',
+                        'values': ('no-transform': 'none'),
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .text-no-transform {
+                    text-transform: none;
+                }
+
+                @media (prefers-reduced-motion: no-preference) {
+                    .motion-allowed\:text-no-transform {
+                        text-transform: none;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .md-max\:text-no-transform {
+                        text-transform: none;
+                    }
+                }
+
+                @media (min-width: 768px) and (max-width: 1280px) {
+                    .md-to-lg\:text-no-transform {
+                        text-transform: none;
+                    }
+                }
+            }
+        }
+    }
+}

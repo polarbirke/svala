@@ -1,0 +1,50 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    'md': '768px',
+    'lg': '1280px'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map,
+    'breakpoint-modifier-divider': '\\:',
+    'responsive-mode': 'leading',
+    'prefix': ''
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test breakpoints without an explicit media-feature (should default to min-width)') {
+    @include it('Generate utility classes with min-width breakpoints') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'text': (
+                        'property': 'text-transform',
+                        'values': ('uppercase'),
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .text-uppercase {
+                    text-transform: uppercase;
+                }
+
+                @media (min-width: 768px) {
+                    .md\:text-uppercase {
+                        text-transform: uppercase;
+                    }
+                }
+
+                @media (min-width: 1280px) {
+                    .lg\:text-uppercase {
+                        text-transform: uppercase;
+                    }
+                }
+            }
+        }
+    }
+}

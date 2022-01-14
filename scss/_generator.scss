@@ -1,5 +1,6 @@
 @import 'config/default-options';
 @import 'config/default-helpers';
+@import 'helpers/breakpoint-transformer';
 @import 'tools/map-iterator';
 
 @mixin generator($config) {
@@ -17,8 +18,10 @@
     @include map-iterator($config, $breakpoint-modifier: '');
 
     @if $breakpoints {
-        @each $breakpoint-modifier, $breakpoint in $breakpoints {
-            @media (#{$breakpoint}) {
+        $refinedBreakpoints: getRefinedBreakpoints($breakpoints);
+
+        @each $breakpoint-modifier, $breakpoint in $refinedBreakpoints {
+            @media #{$breakpoint} {
                 @include map-iterator($config, $breakpoint-modifier, $is-responsive-iteration: true);
             }
         }
