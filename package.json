@@ -1,13 +1,14 @@
 {
   "name": "svala",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "git@github.com:polarbirke/svala.git",
   "author": "Søren Birkemeyer <polarbirke@gmx.de>",
   "license": "MIT",
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.1.0",
     "mocha": "^7.2.0",
+    "node-sass": "^7.0.1",
     "sass-true": "^5.0.0"
   },
   "scripts": {

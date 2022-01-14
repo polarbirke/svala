@@ -2,7 +2,7 @@
 
 const gulp = require('gulp');
 // const log = require('fancy-log');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('node-sass'));
 
 gulp.task('test-scss', function() {
     return gulp.src('test/test.scss')
