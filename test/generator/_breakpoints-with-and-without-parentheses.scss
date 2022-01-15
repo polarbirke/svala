@@ -1,0 +1,79 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/generator';
+
+$breakpoints-map: (
+    'no-motion': 'prefers-reduced-motion: reduce',
+    'tiny-bear': 'max-width: 30em',
+    'small-bear': '30em',
+    'big-bear': '(min-width: 90em)',
+    'between-small-and-big-bear': '(min-width: 30em) and (max-width: 90em)',
+);
+
+$media-features: (
+    'aspect-ratio',
+    'prefers-reduced-motion',
+    'width',
+    'completely-made-up-feature'
+);
+
+$my-options: (
+    'breakpoints': $breakpoints-map,
+    'breakpoint-modifier-divider': '\\:',
+    'media-features': $media-features,
+    'responsive-mode': 'leading',
+    'prefix': ''
+);
+
+$svala-options: map-merge($svala-default-options, $my-options);
+
+@include describe('Test breakpoints with and without media-features and parentheses') {
+    @include it('Generate utility classes with correct media queries regardless of input') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'origin': (
+                        'property': 'transform-origin',
+                        'values': center,
+                        'responsive': true
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .origin-center {
+                    transform-origin: center;
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .no-motion\:origin-center {
+                        transform-origin: center;
+                    }
+                }
+
+                @media (max-width: 30em) {
+                    .tiny-bear\:origin-center {
+                        transform-origin: center;
+                    }
+                }
+
+                @media (min-width: 30em) {
+                    .small-bear\:origin-center {
+                        transform-origin: center;
+                    }
+                }
+
+                @media (min-width: 90em) {
+                    .big-bear\:origin-center {
+                        transform-origin: center;
+                    }
+                }
+
+                @media (min-width: 30em) and (max-width: 90em) {
+                    .between-small-and-big-bear\:origin-center {
+                        transform-origin: center;
+                    }
+                }
+            }
+        }
+    }
+}
