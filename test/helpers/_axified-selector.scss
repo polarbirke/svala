@@ -9,7 +9,7 @@ $axis: ('inline-start', 'inline-end');
         @each $axis-modifier in $axis {
             @include assert-equal(
                 getAxifiedSelector($selector, $axis-modifier),
-                    #{'u-margin-' + $axis-modifier}
+                #{'u-margin-' + $axis-modifier}
             )
         }
     }

@@ -5,9 +5,10 @@
 
 @mixin generator($config) {
     $breakpoints: map-get($svala-options, 'breakpoints');
+    $media-features: map-get($svala-options, 'media-features');
     $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
 
-    // Set up a few guards with errors and warnings
+    // Set up a few guards with errors and warnings or fixes
     // ----------------------------------------------------------------------------------------
     @if $breakpoints and not is-map($breakpoints) {
         $type: type-of($breakpoints);
@@ -15,10 +16,22 @@
         @error "'breakpoints' is of type #{$type} but must be a map.";
     }
 
+    @if $breakpoints and $media-features and not is-map($media-features) {
+
+        @if not is-list($media-features) {
+            $type: type-of($media-features);
+
+            @error "'media-features' is of type #{$type} but must be a list or a map (if map, the features need to be the values).";
+        } @else {
+            $media-features: getMapFromList($media-features);
+        }
+
+    }
+
     @include map-iterator($config, $breakpoint-modifier: '');
 
     @if $breakpoints {
-        $refinedBreakpoints: getRefinedBreakpoints($breakpoints);
+        $refinedBreakpoints: getRefinedBreakpoints($breakpoints, $media-features);
 
         @each $breakpoint-modifier, $breakpoint in $refinedBreakpoints {
             @media #{$breakpoint} {

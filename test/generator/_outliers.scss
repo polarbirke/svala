@@ -6,8 +6,15 @@ $breakpoints-map: (
     'desktop': 'min-width: 1280px'
 );
 
+$media-features: (
+    'aspect-ratio',
+    'prefers-reduced-motion',
+    'width',
+);
+
 $my-options: (
-    'breakpoints': $breakpoints-map
+    'breakpoints': $breakpoints-map,
+    'media-features': $media-features,
 );
 
 $svala-options: map-merge($svala-default-options, $my-options);

@@ -2,13 +2,20 @@
 @import '../../scss/generator';
 
 $breakpoints-map: (
-    'md': '768px',
-    'lg': '1280px'
+    'mittel': '60em',
+    'gross': '75em'
+);
+
+$media-features: (
+    'aspect-ratio',
+    'prefers-reduced-motion',
+    'width',
 );
 
 $my-options: (
     'breakpoints': $breakpoints-map,
     'breakpoint-modifier-divider': '\\:',
+    'media-features': $media-features,
     'responsive-mode': 'leading',
     'prefix': ''
 );
@@ -33,14 +40,14 @@ $svala-options: map-merge($svala-default-options, $my-options);
                     text-transform: uppercase;
                 }
 
-                @media (min-width: 768px) {
-                    .md\:text-uppercase {
+                @media (min-width: 60em) {
+                    .mittel\:text-uppercase {
                         text-transform: uppercase;
                     }
                 }
 
-                @media (min-width: 1280px) {
-                    .lg\:text-uppercase {
+                @media (min-width: 75em) {
+                    .gross\:text-uppercase {
                         text-transform: uppercase;
                     }
                 }

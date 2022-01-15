@@ -1,51 +1,12 @@
-$valid-media-features: (
-    'any-hover',
-    'any-pointer',
-    'aspect-ratio',
-    'color',
-    'color-gamut',
-    'color-index',
-    'display-mode',
-    'forced-colors',
-    'grid',
-    'height',
-    'hover',
-    'inverted-colors',
-    'max-height',
-    'max-width',
-    'min-height',
-    'min-width',
-    'monochrome',
-    'orientation',
-    'overflow-block',
-    'overflow-inline',
-    'pointer',
-    'prefers-color-scheme',
-    'prefers-contrast',
-    'prefers-reduced-motion',
-    'resolution',
-    'scripting',
-    'update',
-    'width',
-);
+@function getRefinedBreakpoints($breakpoints-map, $media-features) {
+    @return getParenthesizedBreakpoints(getSafelyMediaFeaturizedBreakpoints($breakpoints-map, $media-features));
+}
 
-@function getRefinedBreakpoints($breakpoints-map) {
+/// Add parentheses around a breakpoint value if none are present
+@function getParenthesizedBreakpoints($breakpoints-map) {
     $refined-breakpoints-map: ();
 
-    @each $media-feature in $valid-media-features {
-        @each $breakpoint-name, $breakpoint-value in $breakpoints-map {
-
-            @debug $breakpoint-value;
-
-            @if not str-index($breakpoint-value, $media-feature) {
-                $breakpoint-value: #{'min-width: ' + $breakpoint-value};
-            }
-
-            $refined-breakpoints-map: map-merge($refined-breakpoints-map, ($breakpoint-name: $breakpoint-value));
-        }
-    }
-
-    @each $breakpoint-name, $breakpoint-value in $refined-breakpoints-map {
+    @each $breakpoint-name, $breakpoint-value in $breakpoints-map {
         @if not (str-index($breakpoint-value, '(')) and not (str-index($breakpoint-value, ')')) {
             $breakpoint-value: #{'(' + $breakpoint-value + ')'};
         }
@@ -54,4 +15,48 @@ $valid-media-features: (
     }
 
     @return $refined-breakpoints-map;
+}
+
+/// Add "min-width:" as the default media feature if no valid media feature is present in a given breakpoint value
+@function getSafelyMediaFeaturizedBreakpoints($breakpoints-map, $media-features) {
+    $refined-breakpoints: ();
+
+    $tmp-breakpoints: map-merge((), $breakpoints-map);
+
+    @if length($tmp-breakpoints) > 1 {
+        @each $breakpoint-name, $breakpoint-value in $tmp-breakpoints {
+            $tmp-media-features: map-merge((), $media-features);
+
+            @each $feature-index, $feature in $tmp-media-features {
+                @if index(map-values($tmp-media-features), $feature) {
+                    @if length($tmp-breakpoints) > 0 {
+                        $index: str-index($breakpoint-value, $feature);
+
+                        /// Matching media feature found, this breakpoint can be used as is and be discarded
+                        @if $index != null {
+                            $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
+                            $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: $breakpoint-value));
+
+                        /// No match yet, we can discard the current media feature but need to keep checking others for this breakpoint
+                        } @else {
+                            $tmp-media-features: map-remove($tmp-media-features, $feature-index);
+
+                            @if length($tmp-media-features) == 0 {
+                                $index: str-index($breakpoint-value, $feature);
+
+                                /// If the last media feature is no match, we need to add the default "min-width"
+                                /// and can finally discard this breakpoint
+                                @if $index == null {
+                                    $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
+                                    $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: '#{'min-width: ' + $breakpoint-value}'));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @return $refined-breakpoints;
 }

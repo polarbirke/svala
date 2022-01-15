@@ -1,0 +1,9 @@
+@function getMapFromList($list) {
+    $map: ();
+
+    @each $value in $list {
+        $map: map-merge($map, (index($list, $value): $value))
+    }
+
+    @return $map;
+}
