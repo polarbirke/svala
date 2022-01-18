@@ -1,0 +1,19 @@
+@import '../config/default-options';
+
+@function getPrefix($token-map) {
+    $prefix: map-get($token-map, 'prefix') or map-get($svala-options, 'prefix');
+    $prefix-divider: map-get($token-map, 'prefix-divider') or map-get($svala-options, 'prefix-divider');
+
+    @if not $prefix or $prefix == '' { $prefix-divider: '' }
+
+    @return #{$prefix + $prefix-divider};
+}
+
+@function getPostfix($token-map) {
+    $postfix: map-get($token-map, 'postfix') or map-get($svala-options, 'postfix');
+    $postfix-divider: map-get($token-map, 'postfix-divider') or map-get($svala-options, 'postfix-divider');
+
+    @if not $postfix or $postfix == '' { $postfix-divider: ''}
+
+    @return #{$postfix-divider + $postfix};
+}
