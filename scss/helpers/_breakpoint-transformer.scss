@@ -20,36 +20,39 @@
 /// Add "min-width:" as the default media feature if no valid media feature is present in a given breakpoint value
 @function getSafelyMediaFeaturizedBreakpoints($breakpoints-map, $media-features) {
     $refined-breakpoints: ();
+    $tmp-breakpoints: ();
 
-    $tmp-breakpoints: map-merge((), $breakpoints-map);
+    // Populate scoped temporary breakpoint map for checks and removals;
+    // also make sure we're working with string values for str-index()
+    @each $breakpoint-name, $breakpoint-value in $breakpoints-map {
+        $tmp-breakpoints: map-merge($tmp-breakpoints, ($breakpoint-name: quote($breakpoint-value),));
+    }
 
-    @if length($tmp-breakpoints) > 1 {
-        @each $breakpoint-name, $breakpoint-value in $tmp-breakpoints {
-            $tmp-media-features: map-merge((), $media-features);
+    @each $breakpoint-name, $breakpoint-value in $tmp-breakpoints {
+        $tmp-media-features: map-merge((), $media-features);
 
-            @each $feature-index, $feature in $tmp-media-features {
-                @if index(map-values($tmp-media-features), $feature) {
-                    @if length($tmp-breakpoints) > 0 {
-                        $index: str-index(quote($breakpoint-value), $feature);
+        @each $feature-index, $feature in $tmp-media-features {
+            @if index(map-values($tmp-media-features), $feature) {
+                @if length($tmp-breakpoints) > 0 {
+                    $index: str-index($breakpoint-value, $feature);
 
-                        /// Matching media feature found, this breakpoint can be used as is and be discarded
-                        @if $index != null {
-                            $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
-                            $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: $breakpoint-value));
+                    /// Matching media feature found, this breakpoint can be used as is and be discarded
+                    @if $index != null {
+                        $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
+                        $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: $breakpoint-value));
 
-                        /// No match yet, we can discard the current media feature but need to keep checking others for this breakpoint
-                        } @else {
-                            $tmp-media-features: map-remove($tmp-media-features, $feature-index);
+                    /// No match yet, we can discard the current media feature but need to keep checking others for this breakpoint
+                    } @else {
+                        $tmp-media-features: map-remove($tmp-media-features, $feature-index);
 
-                            @if length($tmp-media-features) == 0 {
-                                $index: str-index(quote($breakpoint-value), $feature);
+                        @if length($tmp-media-features) == 0 {
+                            $index: str-index($breakpoint-value, $feature);
 
-                                /// If the last media feature is no match, we need to add the default "min-width"
-                                /// and can finally discard this breakpoint
-                                @if $index == null {
-                                    $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
-                                    $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: '#{'min-width: ' + $breakpoint-value}'));
-                                }
+                            /// If the last media feature is no match, we need to add the default "min-width"
+                            /// and can finally discard this breakpoint
+                            @if $index == null {
+                                $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
+                                $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: '#{'min-width: ' + $breakpoint-value}'));
                             }
                         }
                     }

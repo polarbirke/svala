@@ -26,7 +26,7 @@ $my-options: (
 
 $svala-options: map-merge($svala-default-options, $my-options);
 
-@include describe('Test breakpoints with and without media-features and parentheses') {
+@include describe('Test breakpoints with and without media-features, string values and parentheses') {
     @include it('Generate utility classes with correct media queries regardless of input') {
         @include assert {
             @include output($selector: false) {
