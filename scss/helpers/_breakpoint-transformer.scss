@@ -30,7 +30,7 @@
             @each $feature-index, $feature in $tmp-media-features {
                 @if index(map-values($tmp-media-features), $feature) {
                     @if length($tmp-breakpoints) > 0 {
-                        $index: str-index($breakpoint-value, $feature);
+                        $index: str-index(quote($breakpoint-value), $feature);
 
                         /// Matching media feature found, this breakpoint can be used as is and be discarded
                         @if $index != null {
@@ -42,7 +42,7 @@
                             $tmp-media-features: map-remove($tmp-media-features, $feature-index);
 
                             @if length($tmp-media-features) == 0 {
-                                $index: str-index($breakpoint-value, $feature);
+                                $index: str-index(quote($breakpoint-value), $feature);
 
                                 /// If the last media feature is no match, we need to add the default "min-width"
                                 /// and can finally discard this breakpoint

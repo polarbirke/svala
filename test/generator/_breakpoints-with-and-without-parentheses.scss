@@ -4,7 +4,7 @@
 $breakpoints-map: (
     'no-motion': 'prefers-reduced-motion: reduce',
     'tiny-bear': 'max-width: 30em',
-    'small-bear': '30em',
+    'small-bear': 30em,
     'big-bear': '(min-width: 90em)',
     'between-small-and-big-bear': '(min-width: 30em) and (max-width: 90em)',
 );
