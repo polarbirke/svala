@@ -6,9 +6,16 @@ $breakpoints-map: (
     'lg': 'min-width: 1280px'
 );
 
+$media-features: (
+    'aspect-ratio',
+    'prefers-reduced-motion',
+    'width',
+);
+
 $my-options: (
     'breakpoints': $breakpoints-map,
     'breakpoint-modifier-divider': '\\:',
+    'media-features': $media-features,
     'state-modifier-divider': '\\:',
     'axis-modifier-divider': '',
     'responsive-mode': 'leading',

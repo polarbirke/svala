@@ -1,5 +1,8 @@
+@import "default-media-features";
+
 $svala-default-options: (
     'breakpoints': null,
+    'media-features': $default-media-features,
     'prefix': 'u',
     'prefix-divider': '-',
     'postfix': '',

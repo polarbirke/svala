@@ -1,0 +1,31 @@
+@import './node_modules/sass-true/sass/true';
+@import '../../scss/helpers/list-to-map';
+
+$list: ('mage', 'witch', 'elf', 'fae', 'vampire', 'shifter', 'demon', 'dragon', 'unicorn', 'angel');
+
+@include describe('Convert a list into a map') {
+    @include it('Returns a map') {
+        @include assert-true(
+            is-map(getMapFromList($list)),
+        )
+    }
+    @include it('Returns a map of the same length as the original list') {
+        @include assert-equal(
+            length(getMapFromList($list)),
+            length($list)
+        )
+    }
+    @include it('Returns a map with the same values as the original list') {
+        @include assert-equal(
+            map-values(getMapFromList($list)),
+            $list
+        )
+    }
+    @include it('Returns a map with numbered keys') {
+        @each $item in $list {
+            @include assert-true(
+                map-has-key(getMapFromList($list), index($list, $item))
+            )
+        }
+    }
+}
