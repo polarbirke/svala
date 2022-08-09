@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use "sass:meta";
 
-@use 'config/default-options' as *;
+@use 'config/default-options' as default_options;
 @use 'config/default-helpers' as *;
 
 @use 'helpers/breakpoint-transformer' as *;
@@ -10,6 +10,10 @@
 @use 'helpers/list-to-map' as *;
 
 @use 'tools/generate-classes' as *;
+
+// This needs to be defined with `!default` to be overridable with local options in projects, e.g.
+// @use 'svala/scss/generator' as svala with ($svala-options: svala-config.$svala-options);
+$svala-options: default_options.$svala-options !default;
 
 @mixin generator($config) {
     $breakpoints: map.get($svala-options, 'breakpoints');
