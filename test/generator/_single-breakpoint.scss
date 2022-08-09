@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/config/default-options' as *;
+@use '../../scss/generator' as *;
 
 $breakpoints-map: (
     'navigation-switch': 36em,
@@ -17,7 +19,7 @@ $my-options: (
     'prefix': ''
 );
 
-$svala-options: map-merge($svala-default-options, $my-options);
+$svala-options: map.merge($svala-default-options, $my-options);
 
 @include describe('Test responsive mode with a single breakpoint') {
     @include it('Generate utility classes with only one media query') {

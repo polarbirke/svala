@@ -1,21 +1,25 @@
-@import 'config/default-options';
-@import 'config/default-helpers';
+@use 'sass:map';
+@use "sass:meta";
 
-@import 'helpers/breakpoint-transformer';
-@import 'helpers/pre-and-postfix-transformers';
-@import 'helpers/list-to-map';
+@use 'config/default-options' as *;
+@use 'config/default-helpers' as *;
 
-@import 'tools/generate-classes';
+@use 'helpers/breakpoint-transformer' as *;
+@use 'helpers/checks' as *;
+@use 'helpers/pre-and-postfix-transformers' as *;
+@use 'helpers/list-to-map' as *;
+
+@use 'tools/generate-classes' as *;
 
 @mixin generator($config) {
-    $breakpoints: map-get($svala-options, 'breakpoints');
-    $media-features: map-get($svala-options, 'media-features');
-    $breakpoint-modifier-divider: map-get($svala-options, 'breakpoint-modifier-divider');
+    $breakpoints: map.get($svala-options, 'breakpoints');
+    $media-features: map.get($svala-options, 'media-features');
+    $breakpoint-modifier-divider: map.get($svala-options, 'breakpoint-modifier-divider');
 
     // Set up a few guards with errors and warnings or fixes
     // ----------------------------------------------------------------------------------------
     @if $breakpoints and not is-map($breakpoints) {
-        $type: type-of($breakpoints);
+        $type: meta.type-of($breakpoints);
 
         @error "'breakpoints' is of type #{$type} but must be a map.";
     }
@@ -23,7 +27,7 @@
     @if $breakpoints and $media-features and not is-map($media-features) {
 
         @if not is-list($media-features) {
-            $type: type-of($media-features);
+            $type: meta.type-of($media-features);
 
             @error "'media-features' is of type #{$type} but must be a list or a map (if map, the features need to be the values).";
         } @else {
@@ -33,10 +37,10 @@
     }
 
     @each $token, $token-map in $config {
-        $prefix: map-get($token-map, 'prefix') or map-get($svala-options, 'prefix');
-        $prefix-divider: map-get($token-map, 'prefix-divider') or map-get($svala-options, 'prefix-divider');
-        $postfix: map-get($token-map, 'postfix') or map-get($svala-options, 'postfix');
-        $postfix-divider: map-get($token-map, 'postfix-divider') or map-get($svala-options, 'postfix-divider');
+        $prefix: map.get($token-map, 'prefix') or map.get($svala-options, 'prefix');
+        $prefix-divider: map.get($token-map, 'prefix-divider') or map.get($svala-options, 'prefix-divider');
+        $postfix: map.get($token-map, 'postfix') or map.get($svala-options, 'postfix');
+        $postfix-divider: map.get($token-map, 'postfix-divider') or map.get($svala-options, 'postfix-divider');
 
         @if not $prefix or $prefix == '' { $prefix-divider: '' }
         @if not $postfix or $postfix == '' { $postfix-divider: ''}
@@ -44,15 +48,15 @@
         $prefix: #{$prefix + $prefix-divider};
         $postfix: #{$postfix-divider + $postfix};
 
-        $property: map-get($token-map, 'property');
+        $property: map.get($token-map, 'property');
         $selector: $token;
-        $value: map-get($token-map, 'value');
-        $values: map-get($token-map, 'values') or null;
-        $axes: map-get($token-map, 'axes') or map-get($token-map, 'axis') or null;
-        $axes-shorthand: map-get($token-map, 'axes-shorthand') or map-get($token-map, 'axis-shorthand') or false;
-        $states: map-get($token-map, 'states') or null;
-        $responsive: map-get($token-map, 'responsive') or false;
-        $important: map-get($token-map, 'important') or false;
+        $value: map.get($token-map, 'value');
+        $values: map.get($token-map, 'values') or null;
+        $axes: map.get($token-map, 'axes') or map.get($token-map, 'axis') or null;
+        $axes-shorthand: map.get($token-map, 'axes-shorthand') or map.get($token-map, 'axis-shorthand') or false;
+        $states: map.get($token-map, 'states') or null;
+        $responsive: map.get($token-map, 'responsive') or false;
+        $important: map.get($token-map, 'important') or false;
 
         @include generate-classes(
             $property: $property,
@@ -75,9 +79,9 @@
             $refinedBreakpoints: getRefinedBreakpoints($breakpoints, $media-features);
 
             @each $breakpoint-modifier, $breakpoint in $refinedBreakpoints {
-                @if (map-get($svala-options, 'responsive-mode') == 'trailing') {
+                @if (map.get($svala-options, 'responsive-mode') == 'trailing') {
                     $postfix: #{getPostfix($token-map) + $breakpoint-modifier-divider + $breakpoint-modifier};
-                } @else if (map-get($svala-options, 'responsive-mode') == 'leading') {
+                } @else if (map.get($svala-options, 'responsive-mode') == 'leading') {
                     $prefix: #{$breakpoint-modifier + $breakpoint-modifier-divider + getPrefix($token-map)};
                 }
 

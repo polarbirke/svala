@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/config/default-options' as *;
+@use '../../scss/generator' as *;
 
 $breakpoints-map: (
     'tablet': 'min-width: 768px',
@@ -10,7 +12,7 @@ $my-options: (
     'breakpoints': $breakpoints-map
 );
 
-$svala-options: map-merge($svala-default-options, $my-options);
+$svala-options: map.merge($svala-default-options, $my-options);
 
 @include describe('Test generator with the simplest possible config (only property and value)') {
     @include it('Generate a single utility class') {

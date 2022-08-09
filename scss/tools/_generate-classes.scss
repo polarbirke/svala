@@ -1,18 +1,22 @@
-@import '../helpers/checks';
-@import '../helpers/selector-transformers';
-@import '../helpers/property-transformers';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../scss/config/default-options' as *;
+@use '../helpers/checks' as *;
+@use '../helpers/selector-transformers' as *;
+@use '../helpers/property-transformers' as *;
 
 @mixin generate-classes(
     $property,
     $selector: null,
     $value: null, // allow singular key to be passed for better developer experience
     $values: null,
-    $value-modifier-divider: map-get($svala-options, 'value-modifier-divider'),
+    $value-modifier-divider: map.get($svala-options, 'value-modifier-divider'),
     $axes: null,
-    $axis-modifier-divider: map-get($svala-options, 'axis-modifier-divider'),
+    $axis-modifier-divider: map.get($svala-options, 'axis-modifier-divider'),
     $axes-shorthand: false,
     $states: null,
-    $state-modifier-divider: map-get($svala-options, 'state-modifier-divider'),
+    $state-modifier-divider: map.get($svala-options, 'state-modifier-divider'),
     $prefix: '',
     $postfix: '',
     $important: false,
@@ -61,7 +65,7 @@
     }
 
     @if $values and not is-string($values) and not is-list($values) and not is-map($values) {
-        $type: type-of($values);
+        $type: meta.type-of($values);
 
         @error "'values' is of type #{$type} but must be a string, a list or a map.";
     }
@@ -84,20 +88,20 @@
     }
 
     @if $axes and not is-list($axes) and not is-map($axes) {
-        $type: type-of($axes);
+        $type: meta.type-of($axes);
 
         @error "'axes' is of type #{$type} but must be a list or a map.";
     }
 
     @if $states and not is-list($states) and not is-map($states) {
-        $type: type-of($states);
+        $type: meta.type-of($states);
 
         @error "'states' is of type #{$type} but must be a list or a map.";
     }
 
     @if $states {
         @each $state in $states {
-            @if not index($valid-states, $state) {
+            @if not list.index($valid-states, $state) {
                 @error "Unknown or unsupported pseudo-class ('state') in config: #{$state}. Please read the docs at https://github.com/polarbirke/svala#states for more information.";
             }
         }
@@ -108,7 +112,7 @@
     @if not $selector and $value { $selector: $value }
 
     // [2] allow to pass in a keyword that will set value-modifiers as base selectors
-    @if $selector == map-get($svala-options, 'value-selector-keyword') { $selector: null };
+    @if $selector == map.get($svala-options, 'value-selector-keyword') { $selector: null };
 
     // in case of [1    ] or [2] no value-modifier-divider is needed
     @if not $selector and $values {

@@ -1,5 +1,5 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/generator' as *;
 
 @include describe('Test a local override of axis-modifier-divider for output like ".u-mt"') {
     @include it('Generate margin utility classes in shorthand style') {

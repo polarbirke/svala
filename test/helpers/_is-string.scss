@@ -1,5 +1,5 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/helpers/checks';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/helpers/checks' as *;
 
 $map: (
     'boats': 2,

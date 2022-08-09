@@ -1,5 +1,5 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/generator' as *;
 
 @include describe('Test generator with a config where items are the base selector') {
     @include it('Generate two utility classes (one for each item in items)') {

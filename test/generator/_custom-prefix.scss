@@ -1,11 +1,13 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/config/default-options' as *;
+@use '../../scss/generator' as *;
 
 $my-options: (
     'prefix': 'yolo'
 );
 
-$svala-options: map-merge($svala-default-options, $my-options);
+$svala-options: map.merge($svala-default-options, $my-options);
 
 @include describe('Test custom prefix') {
     @include it('Generate a single utility class with a custom global prefix') {

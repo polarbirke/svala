@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/config/default-options' as *;
+@use '../../scss/generator' as *;
 
 $breakpoints-map: (
     'mittel': '60em',
@@ -20,7 +22,7 @@ $my-options: (
     'prefix': ''
 );
 
-$svala-options: map-merge($svala-default-options, $my-options);
+$svala-options: map.merge($svala-default-options, $my-options);
 
 @include describe('Test breakpoints without an explicit media-feature (should default to min-width)') {
     @include it('Generate utility classes with min-width breakpoints') {

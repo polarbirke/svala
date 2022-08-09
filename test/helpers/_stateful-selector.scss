@@ -1,5 +1,5 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/helpers/selector-transformers';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/helpers/selector-transformers' as *;
 
 $selector: 'u-color-hotpink';
 $states: ('visited', 'link');

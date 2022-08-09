@@ -1,4 +1,4 @@
-@import "default-media-features";
+@use "default-media-features" as *;
 
 $svala-default-options: (
     'breakpoints': null,

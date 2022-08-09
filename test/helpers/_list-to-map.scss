@@ -1,5 +1,8 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/helpers/list-to-map';
+@use 'sass:list';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/helpers/checks' as *;
+@use '../../scss/helpers/list-to-map' as *;
 
 $list: ('mage', 'witch', 'elf', 'fae', 'vampire', 'shifter', 'demon', 'dragon', 'unicorn', 'angel');
 
@@ -17,14 +20,14 @@ $list: ('mage', 'witch', 'elf', 'fae', 'vampire', 'shifter', 'demon', 'dragon', 
     }
     @include it('Returns a map with the same values as the original list') {
         @include assert-equal(
-            map-values(getMapFromList($list)),
+            map.values(getMapFromList($list)),
             $list
         )
     }
     @include it('Returns a map with numbered keys') {
         @each $item in $list {
             @include assert-true(
-                map-has-key(getMapFromList($list), index($list, $item))
+                map.has-key(getMapFromList($list), list.index($list, $item))
             )
         }
     }

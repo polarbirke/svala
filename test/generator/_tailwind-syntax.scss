@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/config/default-options' as *;
+@use '../../scss/generator' as *;
 
 $breakpoints-map: (
     'md': 'min-width: 768px',
@@ -23,7 +25,7 @@ $my-options: (
     'prefix': ''
 );
 
-$svala-options: map-merge($svala-default-options, $my-options);
+$svala-options: map.merge($svala-default-options, $my-options);
 
 $spacings-map: (
     '300': '0.75rem',

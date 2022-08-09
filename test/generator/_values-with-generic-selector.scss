@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'sass:map';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/config/default-options' as *;
+@use '../../scss/generator' as *;
 
 $breakpoints-map: (
     'tablet': 'min-width: 768px',
@@ -17,7 +19,7 @@ $my-options: (
     'media-features': $media-features,
 );
 
-$svala-options: map-merge($svala-default-options, $my-options);
+$svala-options: map.merge($svala-default-options, $my-options);
 
 $spacings-map: (
        '': '1rem',
