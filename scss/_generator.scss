@@ -63,6 +63,7 @@ $svala-options: default_options.$svala-options !default;
         $important: map.get($token-map, 'important') or false;
 
         @include generate-classes(
+            $svala-options: $svala-options,
             $property: $property,
             $selector: $selector,
             $value: $value,
@@ -91,6 +92,7 @@ $svala-options: default_options.$svala-options !default;
 
                 @media #{$breakpoint} {
                     @include generate-classes(
+                        $svala-options: $svala-options,
                         $property: $property,
                         $selector: $selector,
                         $value: $value,

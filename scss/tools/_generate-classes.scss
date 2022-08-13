@@ -7,6 +7,7 @@
 @use '../helpers/property-transformers' as *;
 
 @mixin generate-classes(
+    $svala-options,
     $property,
     $selector: null,
     $value: null, // allow singular key to be passed for better developer experience
