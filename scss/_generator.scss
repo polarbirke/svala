@@ -41,17 +41,8 @@ $svala-options: default_options.$svala-options !default;
     }
 
     @each $token, $token-map in $config {
-        $prefix: map.get($token-map, 'prefix') or map.get($svala-options, 'prefix');
-        $prefix-divider: map.get($token-map, 'prefix-divider') or map.get($svala-options, 'prefix-divider');
-        $postfix: map.get($token-map, 'postfix') or map.get($svala-options, 'postfix');
-        $postfix-divider: map.get($token-map, 'postfix-divider') or map.get($svala-options, 'postfix-divider');
-
-        @if not $prefix or $prefix == '' { $prefix-divider: '' }
-        @if not $postfix or $postfix == '' { $postfix-divider: ''}
-
-        $prefix: #{$prefix + $prefix-divider};
-        $postfix: #{$postfix-divider + $postfix};
-
+        $prefix: getPrefix($token-map, $svala-options);
+        $postfix: getPostfix($token-map, $svala-options);
         $property: map.get($token-map, 'property');
         $selector: $token;
         $value: map.get($token-map, 'value');
@@ -85,9 +76,9 @@ $svala-options: default_options.$svala-options !default;
 
             @each $breakpoint-modifier, $breakpoint in $refinedBreakpoints {
                 @if (map.get($svala-options, 'responsive-mode') == 'trailing') {
-                    $postfix: #{getPostfix($token-map) + $breakpoint-modifier-divider + $breakpoint-modifier};
+                    $postfix: #{getPostfix($token-map, $svala-options) + $breakpoint-modifier-divider + $breakpoint-modifier};
                 } @else if (map.get($svala-options, 'responsive-mode') == 'leading') {
-                    $prefix: #{$breakpoint-modifier + $breakpoint-modifier-divider + getPrefix($token-map)};
+                    $prefix: #{$breakpoint-modifier + $breakpoint-modifier-divider + getPrefix($token-map, $svala-options)};
                 }
 
                 @media #{$breakpoint} {

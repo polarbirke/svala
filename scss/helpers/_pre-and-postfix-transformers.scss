@@ -1,7 +1,6 @@
 @use 'sass:map';
-@use '../config/default-options' as *;
 
-@function getPrefix($token-map) {
+@function getPrefix($token-map, $svala-options) {
     $prefix: map.get($token-map, 'prefix') or map.get($svala-options, 'prefix');
     $prefix-divider: map.get($token-map, 'prefix-divider') or map.get($svala-options, 'prefix-divider');
 
@@ -10,7 +9,7 @@
     @return #{$prefix + $prefix-divider};
 }
 
-@function getPostfix($token-map) {
+@function getPostfix($token-map, $svala-options) {
     $postfix: map.get($token-map, 'postfix') or map.get($svala-options, 'postfix');
     $postfix-divider: map.get($token-map, 'postfix-divider') or map.get($svala-options, 'postfix-divider');
 
