@@ -6,9 +6,9 @@
 @use 'helpers/is-list';
 @use 'helpers/is-string';
 @use 'helpers/list-to-map';
-@use 'helpers/axified-selector';
-@use 'helpers/valuated-selector';
-@use 'helpers/stateful-selector';
+@use 'helpers/axified-selector' with ($svala-options: opt.$svala-default-options);
+@use 'helpers/valuated-selector' with ($svala-options: opt.$svala-default-options);
+@use 'helpers/stateful-selector' with ($svala-options: opt.$svala-default-options);
 
 // generator with config maps
 @use 'generator/custom-prefix' with ($svala-options: map.merge(opt.$svala-default-options, ('prefix': 'yolo')));

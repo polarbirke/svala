@@ -1,7 +1,7 @@
 @use 'sass:map';
-@use '../config/default-options' as *;
 
 @function getStatefulSelector(
+    $svala-options,
     $selector,
     $state-modifier,
     $state-modifier-divider: map.get($svala-options, 'state-modifier-divider')
@@ -16,6 +16,7 @@
 }
 
 @function getAxifiedSelector(
+    $svala-options,
     $selector,
     $axis-modifier,
     $axis-modifier-divider: map.get($svala-options, 'axis-modifier-divider')
@@ -24,6 +25,7 @@
 }
 
 @function getValuatedSelector(
+    $svala-options,
     $selector,
     $value-modifier,
     $value-modifier-divider: map.get($svala-options, 'value-modifier-divider')

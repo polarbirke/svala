@@ -1,7 +1,6 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
-@use '../../scss/config/default-options' as *;
 @use '../helpers/checks' as *;
 @use '../helpers/selector-transformers' as *;
 @use '../helpers/property-transformers' as *;
@@ -138,7 +137,7 @@
 
         @if $states {
             @each $state-modifier in $states {
-                $stateful-selector: getStatefulSelector($selector, $state-modifier);
+                $stateful-selector: getStatefulSelector($svala-options, $selector, $state-modifier);
 
                 .#{$prefix}#{$stateful-selector}#{$postfix} {
                     &:#{$state-modifier} {
@@ -160,7 +159,7 @@
 
         @if $states {
             @each $state-modifier in $states {
-                $stateful-selector: getStatefulSelector($selector, $state-modifier);
+                $stateful-selector: getStatefulSelector($svala-options, $selector, $state-modifier);
 
                 .#{$prefix}#{$stateful-selector}#{$postfix} {
                     &:#{$state-modifier} {
@@ -174,7 +173,7 @@
         @each $axis-modifier, $axis in $axes {
             @if not $axis { $axis: $axis-modifier }
 
-            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
+            $axified-selector: getAxifiedSelector($svala-options, $selector, $axis-modifier, $axis-modifier-divider);
 
             .#{$prefix}#{$axified-selector}#{$postfix} {
                 @if is-list($axis) {
@@ -190,7 +189,7 @@
 
             @if $states {
                 @each $state-modifier in $states {
-                    $stateful-selector: getStatefulSelector($axified-selector, $state-modifier);
+                    $stateful-selector: getStatefulSelector($svala-options, $axified-selector, $state-modifier);
 
                     .#{$prefix}#{$stateful-selector}#{$postfix} {
                         &:#{$state-modifier} {
@@ -212,7 +211,7 @@
 
     @if $values and not $axes {
         @each $value-modifier, $value in $values {
-            $valuated-selector: getValuatedSelector($selector, $value-modifier, $value-modifier-divider);
+            $valuated-selector: getValuatedSelector($svala-options, $selector, $value-modifier, $value-modifier-divider);
 
             @if not $value { $value: $value-modifier }
 
@@ -222,7 +221,7 @@
 
             @if $states {
                 @each $state-modifier in $states {
-                    $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
+                    $stateful-selector: getStatefulSelector($svala-options, $valuated-selector, $state-modifier);
 
                     .#{$prefix}#{$stateful-selector}#{$postfix} {
                         &:#{$state-modifier} {
@@ -240,7 +239,7 @@
         
         // do one cycle without axes…
         @each $value-modifier, $value in $values {
-            $valuated-selector: getValuatedSelector($selector, $value-modifier);
+            $valuated-selector: getValuatedSelector($svala-options, $selector, $value-modifier);
 
             @if not $value { $value: $value-modifier }
 
@@ -250,7 +249,7 @@
 
             @if $states {
                 @each $state-modifier in $states {
-                    $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
+                    $stateful-selector: getStatefulSelector($svala-options, $valuated-selector, $state-modifier);
 
                     .#{$prefix}#{$stateful-selector}#{$postfix} {
                         &:#{$state-modifier} {
@@ -265,10 +264,10 @@
         @each $axis-modifier, $axis in $axes {
             @if not $axis { $axis: $axis-modifier }
 
-            $axified-selector: getAxifiedSelector($selector, $axis-modifier, $axis-modifier-divider);
+            $axified-selector: getAxifiedSelector($svala-options, $selector, $axis-modifier, $axis-modifier-divider);
 
             @each $value-modifier, $value in $values {
-                $valuated-selector: getValuatedSelector($axified-selector, $value-modifier);
+                $valuated-selector: getValuatedSelector($svala-options, $axified-selector, $value-modifier);
 
                 @if not $value { $value: $value-modifier }
 
@@ -286,7 +285,7 @@
 
                 @if $states {
                     @each $state-modifier in $states {
-                        $stateful-selector: getStatefulSelector($valuated-selector, $state-modifier);
+                        $stateful-selector: getStatefulSelector($svala-options, $valuated-selector, $state-modifier);
 
                         .#{$prefix}#{$stateful-selector}#{$postfix} {
                             &:#{$state-modifier} {
