@@ -1,13 +1,8 @@
 @use 'sass:map';
 @use 'node_modules/sass-true' as *;
-@use '../../scss/config/default-options' as *;
 @use '../../scss/generator' as *;
 
-$my-options: (
-    'prefix': ''
-);
-
-$svala-options: map.merge($svala-default-options, $my-options);
+$svala-options: () !default;
 
 @include describe('Test with !important') {
     @include it('Generate a single utility class with !important') {
@@ -23,7 +18,7 @@ $svala-options: map.merge($svala-default-options, $my-options);
             }
 
             @include expect($selector: false) {
-                .clear-left {
+                .u-clear-left {
                     clear: left !important;
                 }
             }

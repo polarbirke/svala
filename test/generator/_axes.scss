@@ -1,25 +1,8 @@
 @use 'sass:map';
 @use 'node_modules/sass-true' as *;
-@use '../../scss/config/default-options' as *;
 @use '../../scss/generator' as *;
 
-$breakpoints-map: (
-    'tablet': 'min-width: 768px',
-    'desktop': 'min-width: 1280px'
-);
-
-$media-features: (
-    'aspect-ratio',
-    'prefers-reduced-motion',
-    'width',
-);
-
-$my-options: (
-    'breakpoints': $breakpoints-map,
-    'media-features': $media-features,
-);
-
-$svala-options: map.merge($svala-default-options, $my-options);
+$svala-options: () !default;
 
 @include describe('Test generator with axis') {
     @include it('Generate three utility classes (a generic one as well as one for each axis)') {

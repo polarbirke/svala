@@ -1,6 +1,8 @@
 @use 'node_modules/sass-true' as *;
 @use '../../scss/generator' as *;
 
+$svala-options: () !default;
+
 @include describe('Test generator with a config where items are the base selector') {
     @include it('Generate two utility classes (one for each item in items)') {
         @include assert {

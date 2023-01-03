@@ -1,6 +1,8 @@
 @use 'node_modules/sass-true' as *;
 @use '../../scss/generator' as *;
 
+$svala-options: () !default;
+
 @include describe('Test a local override of axis-modifier-divider for output like ".u-mt"') {
     @include it('Generate margin utility classes in shorthand style') {
         @include assert {

@@ -1,13 +1,8 @@
 @use 'sass:map';
 @use 'node_modules/sass-true' as *;
-@use '../../scss/config/default-options' as *;
 @use '../../scss/generator' as *;
 
-$my-options: (
-    'value-modifier-divider': '--'
-);
-
-$svala-options: map.merge($svala-default-options, $my-options);
+$svala-options: () !default;
 
 @include describe('Test BEM-like double-hyphen notation for modifiers') {
     @include it('Generate three utility classes with -- before modifiers') {

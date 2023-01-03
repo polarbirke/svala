@@ -1,3 +1,6 @@
+@use 'sass:map';
+@use '../scss/config/default-options' as opt;
+
 // helpers
 @use 'helpers/is-map';
 @use 'helpers/is-list';
@@ -8,21 +11,202 @@
 @use 'helpers/stateful-selector';
 
 // generator with config maps
-@use 'generator/custom-prefix';
-@use 'generator/no-prefix';
-@use 'generator/important';
-@use 'generator/value';
-@use 'generator/values';
-@use 'generator/values-as-selector';
-@use 'generator/values-with-generic-selector';
-@use 'generator/axes';
-@use 'generator/axes-values';
-@use 'generator/axes-multiple-properties';
-@use 'generator/axes-shorthand-without-divider';
-@use 'generator/tailwind-syntax';
-@use 'generator/bem-notation-for-values';
-@use 'generator/outliers';
-@use 'generator/breakpoints-without-media-feature';
-@use 'generator/breakpoints-with-explicit-media-features';
-@use 'generator/breakpoints-with-various-formatting';
-@use 'generator/single-breakpoint';
+@use 'generator/custom-prefix' with ($svala-options: map.merge(opt.$svala-default-options, ('prefix': 'yolo')));
+@use 'generator/no-prefix' with ($svala-options: map.merge(opt.$svala-default-options, ('prefix': '')));
+@use 'generator/important' with ($svala-options: opt.$svala-default-options);
+@use 'generator/value' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'tablet': 'min-width: 768px',
+                'desktop': 'min-width: 1280px'
+            ),
+        )
+    )
+);
+@use 'generator/values' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'tablet': 'min-width: 768px',
+                'desktop': 'min-width: 1280px'
+            ),
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+        )
+    )
+);
+@use 'generator/values-as-selector' with ($svala-options: opt.$svala-default-options);
+@use 'generator/values-with-generic-selector' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'tablet': 'min-width: 768px',
+                'desktop': 'min-width: 1280px'
+            ),
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+        )
+    )
+);
+@use 'generator/axes' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'tablet': 'min-width: 768px',
+                'desktop': 'min-width: 1280px'
+            ),
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+        )
+    )
+);
+@use 'generator/axes-values' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'tablet': 'min-width: 768px',
+                'desktop': 'min-width: 1280px'
+            ),
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+        )
+    )
+);
+@use 'generator/axes-multiple-properties' with ($svala-options: opt.$svala-default-options);
+@use 'generator/axes-shorthand-without-divider' with ($svala-options: opt.$svala-default-options);
+@use 'generator/tailwind-syntax' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'md': 'min-width: 768px',
+                'lg': 'min-width: 1280px'
+            ),
+            'breakpoint-modifier-divider': '\\:',
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+            'state-modifier-divider': '\\:',
+            'axis-modifier-divider': '',
+            'responsive-mode': 'leading',
+            'stateful-mode': 'leading',
+            'prefix': ''
+        )
+    )
+);
+@use 'generator/bem-notation-for-values' with ($svala-options: map.merge(opt.$svala-default-options, ('value-modifier-divider': '--')));
+@use 'generator/outliers' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'tablet': 'min-width: 768px',
+                'desktop': 'min-width: 1280px'
+            ),
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+        )
+    )
+);
+@use 'generator/breakpoints-without-media-feature' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'mittel': '60em',
+                'gross': '75em'
+            ),
+            'breakpoint-modifier-divider': '\\:',
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+            'responsive-mode': 'leading',
+            'prefix': ''
+        )
+    )
+);
+@use 'generator/breakpoints-with-explicit-media-features' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'aspect-ratio-16\\:9': 'aspect-ratio: 16/9',
+                'motion-allowed': 'prefers-reduced-motion: no-preference',
+                'md-max': 'max-width: 768px',
+                'md-to-lg': '(min-width: 768px) and (max-width: 1280px)',
+            ),
+            'breakpoint-modifier-divider': '\\:',
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+            ),
+            'responsive-mode': 'leading',
+            'prefix': ''
+        )
+    )
+);
+@use 'generator/breakpoints-with-various-formatting' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'no-motion': 'prefers-reduced-motion: reduce',
+                'tiny-bear': 'max-width: 30em',
+                'small-bear': 30em,
+                'big-bear': '(min-width: 90em)',
+                'between-small-and-big-bear': '(min-width: 30em) and (max-width: 90em)',
+            ),
+            'breakpoint-modifier-divider': '\\:',
+            'media-features': (
+                'aspect-ratio',
+                'prefers-reduced-motion',
+                'width',
+                'completely-made-up-feature'
+            ),
+            'responsive-mode': 'leading',
+            'prefix': ''
+        )
+    )
+);
+@use 'generator/single-breakpoint' with (
+    $svala-options: map.merge(
+        opt.$svala-default-options,
+        (
+            'breakpoints': (
+                'navigation-switch': 36em,
+            ),
+            'breakpoint-modifier-divider': '\\:',
+            'media-features': (
+                'width',
+            ),
+            'responsive-mode': 'leading',
+            'prefix': ''
+        )
+    )
+);
