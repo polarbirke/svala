@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/helpers/selector-transformers';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/helpers/selector-transformers' as *;
+
+$svala-options: () !default;
 
 $selector: 'u-color-hotpink';
 $states: ('visited', 'link');
@@ -8,7 +10,7 @@ $states: ('visited', 'link');
     @include it('Concatenates the state-modifier and -divider to the selector') {
         @each $state-modifier in $states {
             @include assert-equal(
-                getStatefulSelector($selector, $state-modifier),
+                getStatefulSelector($svala-options, $selector, $state-modifier),
                 #{'u-color-hotpink\\@' + $state-modifier}
             )
         }

@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/helpers/selector-transformers';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/helpers/selector-transformers' as *;
+
+$svala-options: () !default;
 
 $selector: 'u-margin';
 $axis: ('inline-start', 'inline-end');
@@ -8,7 +10,7 @@ $axis: ('inline-start', 'inline-end');
     @include it('Concatenates the axis-modifier and -divider to the selector') {
         @each $axis-modifier in $axis {
             @include assert-equal(
-                getAxifiedSelector($selector, $axis-modifier),
+                getAxifiedSelector($svala-options, $selector, $axis-modifier),
                 #{'u-margin-' + $axis-modifier}
             )
         }

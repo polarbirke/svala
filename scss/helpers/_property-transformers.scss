@@ -1,4 +1,4 @@
-@import '../config/default-options';
+@use '../config/default-options' as *;
 
 @function getAxifiedProperty(
     $property,

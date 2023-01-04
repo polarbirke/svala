@@ -1,11 +1,13 @@
+@use 'sass:meta';
+
 @function is-list($var){
-    @return type-of($var) == 'list';
+    @return meta.type-of($var) == 'list';
 }
 
 @function is-map($var){
-    @return type-of($var) == 'map';
+    @return meta.type-of($var) == 'map';
 }
 
 @function is-string($var){
-    @return type-of($var) == 'string';
+    @return meta.type-of($var) == 'string';
 }

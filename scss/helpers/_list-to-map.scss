@@ -1,9 +1,14 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:string';
+
 @function getMapFromList($list) {
     $map: ();
 
     @each $value in $list {
-        $map: map-merge($map, (index($list, $value): $value))
+        $map: map.merge($map, (list.index($list, $value): $value))
     }
 
     @return $map;
+    //@return (1: 1, 2: 2);
 }

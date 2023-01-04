@@ -1,5 +1,7 @@
-@import './node_modules/sass-true/sass/true';
-@import '../../scss/generator';
+@use 'node_modules/sass-true' as *;
+@use '../../scss/generator' as *;
+
+$svala-options: () !default;
 
 @include describe('Test outputting multiple declarations per axified class, e.g. "margin-horizontal" with margin-right and margin-left') {
     @include it('Generate margin utility classes across six axes') {

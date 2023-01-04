@@ -1,3 +1,8 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+
 @function getRefinedBreakpoints($breakpoints-map, $media-features) {
     @return getParenthesizedBreakpoints(getSafelyMediaFeaturizedBreakpoints($breakpoints-map, $media-features));
 }
@@ -7,11 +12,11 @@
     $refined-breakpoints-map: ();
 
     @each $breakpoint-name, $breakpoint-value in $breakpoints-map {
-        @if not (str-index($breakpoint-value, '(')) and not (str-index($breakpoint-value, ')')) {
+        @if not (string.index($breakpoint-value, '(')) and not (string.index($breakpoint-value, ')')) {
             $breakpoint-value: #{'(' + $breakpoint-value + ')'};
         }
 
-        $refined-breakpoints-map: map-merge($refined-breakpoints-map, ($breakpoint-name: $breakpoint-value));
+        $refined-breakpoints-map: map.merge($refined-breakpoints-map, ($breakpoint-name: $breakpoint-value));
     }
 
     @return $refined-breakpoints-map;
@@ -23,41 +28,47 @@
     $tmp-breakpoints: ();
 
     // Populate scoped temporary breakpoint map for checks and removals;
-    // also make sure we're working with string values for str-index()
     @each $breakpoint-name, $breakpoint-value in $breakpoints-map {
-        $tmp-breakpoints: map-merge($tmp-breakpoints, ($breakpoint-name: quote($breakpoint-value),));
+        $tmp-breakpoints: map.merge($tmp-breakpoints, ($breakpoint-name: $breakpoint-value,));
     }
 
     @each $breakpoint-name, $breakpoint-value in $tmp-breakpoints {
-        $tmp-media-features: map-merge((), $media-features);
+        $tmp-media-features: map.merge((), $media-features);
 
-        @each $feature-index, $feature in $tmp-media-features {
-            @if index(map-values($tmp-media-features), $feature) {
-                @if length($tmp-breakpoints) > 0 {
-                    $index: str-index($breakpoint-value, $feature);
+        // we only need to check strings, if the value is a number it cannot contain a string-based media feature
+        @if (meta.type-of($breakpoint-value) == 'string') {
+            @each $feature-index, $feature in $tmp-media-features {
+                @if list.index(map.values($tmp-media-features), $feature) {
+                    @if list.length($tmp-breakpoints) > 0 {
+                        $index: string.index($breakpoint-value, $feature);
 
-                    /// Matching media feature found, this breakpoint can be used as is and be discarded
-                    @if $index != null {
-                        $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
-                        $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: $breakpoint-value));
+                        /// Matching media feature found, this breakpoint can be used as is and be discarded
+                        @if $index != null {
+                            $tmp-breakpoints: map.remove($tmp-breakpoints, $breakpoint-name);
+                            $refined-breakpoints: map.merge($refined-breakpoints, ($breakpoint-name: $breakpoint-value));
 
-                    /// No match yet, we can discard the current media feature but need to keep checking others for this breakpoint
-                    } @else {
-                        $tmp-media-features: map-remove($tmp-media-features, $feature-index);
+                            /// No match yet, we can discard the current media feature but need to keep checking others for this breakpoint
+                        } @else {
+                            $tmp-media-features: map.remove($tmp-media-features, $feature-index);
 
-                        @if length($tmp-media-features) == 0 {
-                            $index: str-index($breakpoint-value, $feature);
+                            @if list.length($tmp-media-features) == 0 {
+                                $index: string.index($breakpoint-value, $feature);
 
-                            /// If the last media feature is no match, we need to add the default "min-width"
-                            /// and can finally discard this breakpoint
-                            @if $index == null {
-                                $tmp-breakpoints: map-remove($tmp-breakpoints, $breakpoint-name);
-                                $refined-breakpoints: map-merge($refined-breakpoints, ($breakpoint-name: '#{'min-width: ' + $breakpoint-value}'));
+                                /// If the last media feature is no match, we need to add the default "min-width"
+                                /// and can finally discard this breakpoint
+                                @if $index == null {
+                                    $tmp-breakpoints: map.remove($tmp-breakpoints, $breakpoint-name);
+                                    $refined-breakpoints: map.merge($refined-breakpoints, ($breakpoint-name: '#{'min-width: ' + $breakpoint-value}'));
+                                }
                             }
                         }
                     }
                 }
             }
+        // number values always receive the default "min-width"
+        } @else {
+            $tmp-breakpoints: map.remove($tmp-breakpoints, $breakpoint-name);
+            $refined-breakpoints: map.merge($refined-breakpoints, ($breakpoint-name: '#{'min-width: ' + $breakpoint-value}'));
         }
     }
 

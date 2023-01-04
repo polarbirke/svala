@@ -25,7 +25,7 @@ in your terminal. Use `yarn add svala` if you prefer Yarn.
 
 ## Requirements
 
-Svala is written in Sass, which means you need a way to compile it to CSS. It doesn't matter if you love Gulp, use node-sass on the command line or if Webpack is your jam. Anything that can compile Sass to CSS will work. Here's [a tutorial for one way to do it](https://webdesign.tutsplus.com/tutorials/watch-and-compile-sass-in-five-quick-steps--cms-28275). 
+Svala is written in Sass, which means you need a way to compile it to CSS. Furthermore, **Svala requires Dart Sass** because it makes use of its module system with `@use` and `@forward` It doesn't matter if you love Gulp, use node-sass on the command line or if Webpack is your jam. Anything that can compile Sass to CSS will work. Here's [a tutorial for one way to do it](https://webdesign.tutsplus.com/tutorials/watch-and-compile-sass-in-five-quick-steps--cms-28275). 
 
 ## Usage
 
