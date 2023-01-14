@@ -5,7 +5,7 @@
 
 $svala-options: () !default;
 
-@include describe('Test difficult outliers, e.g.: border-radius, border-style, etc.') {
+@include describe('Test difficult outliers, e.g.: border-radius, border-style, (column-)gap, etc.') {
     @include it('Generate valid border-color classes') {
         @include assert {
             @include output($selector: false) {
@@ -399,6 +399,52 @@ $svala-options: () !default;
                 .u-border-vertical-300 {
                     border-top-width: 8px;
                     border-bottom-width: 8px;
+                }
+            }
+        }
+    }
+
+    @include it('Generate valid gap classes across x- and y-axes') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'gap': (
+                        'property': 'gap',
+                        'values': (
+                            '300': '0.75rem',
+                            '400': '1rem'
+                        ),
+                        'axes': (
+                            'x': 'column',
+                            'y': 'row'
+                        ),
+                    ),
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-gap-300 {
+                    gap: 0.75rem;
+                }
+
+                .u-gap-400 {
+                    gap: 1rem;
+                }
+
+                .u-gap-x-300 {
+                    column-gap: 0.75rem;
+                }
+
+                .u-gap-x-400 {
+                    column-gap: 1rem;
+                }
+
+                .u-gap-y-300 {
+                    row-gap: 0.75rem;
+                }
+
+                .u-gap-y-400 {
+                    row-gap: 1rem;
                 }
             }
         }
