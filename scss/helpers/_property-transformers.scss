@@ -12,6 +12,8 @@
         $property: #{'border-' + $axis + '-style'}
     } @else if $property == 'border-width' {
         $property: #{'border-' + $axis + '-width'}
+    } @else if $property == 'gap' {
+        $property: #{$axis + '-gap'}
     } @else {
         $property: #{$property + '-' + $axis}
     }
