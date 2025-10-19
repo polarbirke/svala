@@ -449,4 +449,30 @@ $svala-options: () !default;
             }
         }
     }
+
+    @include it('Generate a single utility class with auto keyword') {
+        @include assert {
+            @include output($selector: false) {
+                @include generator((
+                    'margin': (
+                        'property': 'margin',
+                        'values': (
+                            none: 0,
+                            auto: auto,
+                        )
+                    )
+                ));
+            }
+
+            @include expect($selector: false) {
+                .u-margin-none {
+                    margin: 0;
+                }
+
+                .u-margin-auto {
+                    margin: auto;
+                }
+            }
+        }
+    }
 }
